@@ -40,7 +40,7 @@
 			</table>
 			<input type="submit" value="Log In" />
 		</form><br>
-		<p>If you've forgotten your password, you can e-mail <a href="mailto:cjb@laptop.org">cjb@laptop.org</a> for a new one.</p>
+		<p>If you've forgotten your password, you can e-mail <a href="mailto:tech@manicsages.org">tech@manicsages.org</a> for a new one.</p>
 <?php
 	}
 	

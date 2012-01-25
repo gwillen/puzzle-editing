@@ -3,7 +3,7 @@
 	require_once "utils.php";
 
 	function head($selnav = "home") {
-        $hunt=mktime(12,00,00,1,13,2012);
+        $hunt=mktime(12,00,00,1,18,2013);
         $now = time();
         $tth=$hunt-$now;
         $days=floor($tth/(60 * 60 * 24));
@@ -25,7 +25,7 @@
 	<link rel="stylesheet" type="text/css" href="css/style.css" />
 	<?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
 	
-	<title>Hunt Writing Server</title>
+	<title>Puzzletron</title>
 	
 	<script type='text/javascript' src='jquery-1.4.2.js'></script>
 	<script type='text/javascript' src='jquery.tablesorter.min.js'></script>
@@ -36,7 +36,7 @@
 	<div id="header" style="margin-top:15px;">
           <div id="titletext" style="vertical-align:middle; margin-bottom:10px;">
 				<div style="text-align:left;width:auto;float:left;vertical-align:top;">
-                     <h1>Hunt authoring server</h1>
+                     <h1>Puzzletron: the Mystery Hunt writing server</h1>
                 </div>
                 <div style="text-align:right;width:auto;float:right;vertical-align:top;">
                      <h3 style="margin-top:0;"> <span class="red"><?php echo $days ?></span> days, <span class="red"><?php echo $hrs ?></span> hours and <span class="red"><?php echo $mins ?></span> minutes left until hunt.</h3>
@@ -52,8 +52,8 @@
 				  if(isset($_SESSION['uid']) && isServerAdmin($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "admin") ? "selnav" : "nav" ?>" href="admin">Admin</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author">Author</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="ffc">Final Fact Check</a></li> <?php } ?>
-			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="factcheck">Fact Check</a></li> <?php } ?>
+			<?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck">Fact Check</a></li> <?php } ?>
+            <?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "ffc") ? "selnav" : "nav" ?>" href="ffc">Final Fact Check</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving">Testsolving</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && (isLurker($_SESSION['uid']) || isTestingAdmin($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin">Testing Admin</a></li> <?php } ?>
 			<?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats") ? "selnav" : "nav" ?>" href='puzzlestats'>Stats</a></li> <?php } ?>
@@ -74,7 +74,7 @@
 	</div>
 	<div id="footer">
 		<hr />
-		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:memberjasper@googlegroups.com">Server Administrators</a>.  The original authors of this software are Kate Baker and Metaphysical Plant.  This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
+		<p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:tech@manicsages.org">Server Administrators</a>.  The original authors of this software are Kate Baker and Metaphysical Plant.  This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
 	</div>
 </div>		
 </body>
