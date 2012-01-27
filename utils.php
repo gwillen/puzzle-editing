@@ -1451,7 +1451,11 @@ function getInactiveTestPuzzlesForUser($uid)
 function getDoneTestingPuzzlesForUser($uid)
 {
 	$sql = sprintf("SELECT pid FROM doneTesting WHERE uid='%s'", mysql_real_escape_string($uid));
-	return get_elements_null($sql);
+	$result = get_elements_null($sql);
+    if ($result == NULL)
+      return array();
+    else
+      return $result;
 }
 
 function getActiveDoneTestingPuzzlesForUser($uid)
