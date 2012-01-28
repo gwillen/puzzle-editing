@@ -10,6 +10,13 @@
 		exit(1);
 	}
 
+	// Use UTF-8 character set for connection
+	if (!mysql_set_charset('utf8')) {
+		echo 'Could not set character set.';
+		foot();
+		exit(1);
+	}
+
 	// Select database
 	if (mysql_select_db(DB_NAME, $db) == FALSE) {
 		echo 'Could not select database ' . DB_NAME . '.';
