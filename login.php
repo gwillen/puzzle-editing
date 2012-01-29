@@ -66,6 +66,6 @@
 		$r = mysql_fetch_assoc($result);
 		$_SESSION['uid'] = $r['uid'];
 		
-		header("Location: " . URL . "/index.php");
+		header("Location: " . URL . "/");
 	}
 ?>

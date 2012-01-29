@@ -24,7 +24,7 @@
 
 		if ($r === TRUE) {
 			echo '<h4> Registration Successful. </h4>';
-			echo '<h4> <a href="index.php"> Log In </a> </h4>';
+			echo '<h4> <a href="./"> Log In </a> </h4>';
 		} else {
 			echo $r;
 			registerForm($_POST['id']);

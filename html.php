@@ -45,7 +45,7 @@
 	  	 </div>
 	  	<div id="navbar" style="float:left;width:100%;background-color:#efefef;">
 		<ul class="nav" style="float:left;">
-			<li class="nav"><a class="<?php echo ($selnav == "home") ? "selnav" : "nav" ?>" href="index">Home</a></li> <?php if(isset($_SESSION['uid'])) { ?>
+			<li class="nav"><a class="<?php echo ($selnav == "home") ? "selnav" : "nav" ?>" href="./">Home</a></li> <?php if(isset($_SESSION['uid'])) { ?>
 			<li class="nav"><a class="<?php echo ($selnav == "people") ? "selnav" : "nav" ?>" href="people">People</a></li>
 			<li class="nav"><a class="<?php echo ($selnav == "account") ? "selnav" : "nav" ?>" href="account">Your Account</a></li>
 			<?php }
