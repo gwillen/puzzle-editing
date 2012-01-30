@@ -2,7 +2,7 @@
 	require_once "config.php";
 	require_once "utils.php";
 
-	function head($selnav = "home") {
+	function head($selnav = "") {
         $hunt=mktime(12,00,00,1,18,2013);
         $now = time();
         $tth=$hunt-$now;
