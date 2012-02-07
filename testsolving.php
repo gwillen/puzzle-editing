@@ -31,6 +31,7 @@
 	<h3>In Queue</h3>
 <?php
 
+  /* Commented out to disallow -- for now -- getting a random puzzle to test.
 	if (getPuzzleToTest($uid) == FALSE) {
 		echo '<strong>No Puzzles To Add</strong>';
 	} else {
@@ -41,6 +42,8 @@
 			</form>
 <?php
 	}		
+  */
+
 	$testPuzzles = getActivePuzzlesInTestQueue($uid);
 	displayQueue($uid, $testPuzzles, FALSE, FALSE, FALSE, TRUE, FALSE);
 	
