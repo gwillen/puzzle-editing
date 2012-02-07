@@ -878,6 +878,9 @@ function addAuthors($uid, $pid, $add)
 		$message = "$name added you as an author on puzzle $pid.";
 		$link = URL . "/puzzle?pid=$pid";
 		sendEmail($auth, $subject, $message, $link);
+
+		// Subscribe authors to comments on their puzzles
+		subscribe($auth, $pid);
 	}
 		
 	$comment .= ' as author';
@@ -960,6 +963,9 @@ function addEditors($uid, $pid, $add)
 		$message = "$name added you as an editor to puzzle $pid.";
 		$link = URL . "/puzzle?pid=$pid";
 		sendEmail($editor, $subject, $message, $link);
+
+		// Subscribe editors to comments on their puzzles
+		subscribe($editor, $pid);
 	}
 		
 	$comment .= ' as editor';
@@ -1530,6 +1536,9 @@ function addPuzzleToEditorQueue($uid, $pid)
 	$comment = "Added to " . getUserName($uid) . "'s queue";
 	addComment($uid, $pid,$comment,TRUE);	
 	mysql_query('COMMIT');
+
+	// Subscribe editors to comments on the puzzles they edit
+	subscribe($uid, $pid);
 }
 
 function addPuzzleToTestQueue($uid, $pid)

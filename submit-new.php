@@ -26,6 +26,8 @@
 		if ($summary == '' || $description == '') {
 			echo "<h2>You must enter a summary and a description</h2>";
 			newIdeaForm($uid, $summary, $description);
+			foot();
+			exit(1);
 		}
 		
 		$time = time();
@@ -57,6 +59,14 @@
 		}
 		
 		mysql_query('COMMIT');
+
+		// Subscribe authors to comments on their own puzzles
+		subscribe($uid, $id);
+		foreach ($coauthors as $auth) {
+			if ($auth != $uid) {
+				subscribe($auth, $id);
+			}
+		}
 		
 		echo "<h3>Idea Submitted</h3>";
 	} else {
