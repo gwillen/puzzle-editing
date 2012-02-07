@@ -52,13 +52,13 @@
 		displayTestQueue($uid);
 	}
 	
-	echo "<h1>Testing Summary</h1>";	
-	displayTestingSummary();
-
 	echo "<h1>Puzzles needing testadmin</h1>";
 	$testPuzzles = getPuzzlesNeedTestAdmin();
 	displayQueue($uid, $testPuzzles, FALSE, FALSE, FALSE, FALSE, FALSE);
 	
+	echo "<h1>Testing Summary</h1>";	
+	displayTestingSummary();
+
 	// End HTML
 	foot();
 	
