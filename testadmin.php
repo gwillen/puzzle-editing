@@ -54,6 +54,10 @@
 	
 	echo "<h1>Testing Summary</h1>";	
 	displayTestingSummary();
+
+	echo "<h1>Puzzles needing testadmin</h1>";
+	$testPuzzles = getPuzzlesNeedTestAdmin();
+	displayQueue($uid, $testPuzzles, FALSE, FALSE, FALSE, FALSE, FALSE);
 	
 	// End HTML
 	foot();
