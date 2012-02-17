@@ -1015,9 +1015,14 @@ function removeEditors($uid, $pid, $remove)
 	addComment($uid, $pid, $comment, TRUE);
 }
 
+function canFactCheckPuzzle($uid, $pid)
+{
+  return isPuzzleInFactChecking($pid) && isFactChecker($uid);
+}
+
 function canViewPuzzle($uid, $pid)
 {
-	return isLurker($uid) || isPuzzleInFinalFactChecking($pid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid);
+	return isLurker($uid) || isPuzzleInFinalFactChecking($pid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid);
 }
 
 function canChangeAnswers($uid)
@@ -1414,6 +1419,16 @@ function getPuzzlesInTestQueue($uid)
 	return $puzzles;
 }
 
+// This is not actually used currently. -- gwillen
+function getPuzzlesNeedingTesters()
+{
+	$sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN test_queue ON test_queue.pid
+	        = puzzle_idea.id WHERE pstatus = 4 AND uid IS NULL";
+	$puzzles = get_elements_null($sql);
+	
+	return $puzzles;
+}
+
 function getActivePuzzlesInTestQueue($uid)
 {
 	$puzzles = getPuzzlesInTestQueue($uid);
@@ -1712,6 +1727,13 @@ function getAllPuzzles() {
 	$puzzles = get_elements_null($sql);
 	
 	return sortByLastCommentDate($puzzles);
+}
+
+function isPuzzleInFactChecking($pid)
+{
+	$sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+			WHERE puzzle_idea.id='%s' AND pstatus.needsFactcheck='1'", mysql_real_escape_string($pid));
+	return has_result($sql);
 }
 
 function isPuzzleInFinalFactChecking($pid)
