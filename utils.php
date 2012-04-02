@@ -15,7 +15,38 @@ function isLoggedIn()
 		exit(0);
 	}
 }
+
+function validUserId($uid)
+{
+	$sql = sprintf("SELECT * FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+	return has_result($sql);
+}
 	
+function isValidPuzzleFilter()
+{
+	if (isset($_SESSION['filterkey']) && isset($_SESSION['filtervalue'])) {
+		$key = $_SESSION['filterkey'];
+		if ($key != "status" && $key != "author" && $key != "editor") {
+			echo "Invalid sort key. What did you even do?";
+			foot();
+			exit(1);
+		}
+		$val = $_SESSION['filtervalue'];
+		if ($key == "status" && !validPuzzleStatus($val)) {
+			echo "Invalid puzzle status ID.";
+			foot();
+			exit(1);
+		}
+		if (($key == "author" || $key == "editor") && !validUserId($val)) {
+			echo "Invalid user ID.";
+			foot();
+			exit(1);
+		}
+		return [$key, $val];
+	}
+	return [];
+}
+
 // Check that a valid puzzle is given in the URL.
 function isValidPuzzleURL()
 {
@@ -1203,6 +1234,12 @@ function emailTesters($pid, $status)
 	foreach ($testers as $uid => $name) {
 		sendEmail($uid, $subject, $message, $link);
 	}
+}
+
+function validPuzzleStatus($id)
+{
+	$sql = sprintf("SELECT * FROM pstatus WHERE id='%s'", mysql_real_escape_string($id));
+	return has_result($sql);
 }
 
 function getPuzzleStatusName($id)

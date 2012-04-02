@@ -16,11 +16,13 @@
 		foot();
 		exit(1);
 	}
+
+	$filt = isValidPuzzleFilter();
 	
 	displayPuzzleStats($uid);
 	
 	$puzzles = getAllPuzzles();
-	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
+	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, $filt);
 
 	
 	// End HTML

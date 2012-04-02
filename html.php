@@ -135,7 +135,7 @@
 <?php
 	}	
 	
-	function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters)
+	function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $filter = [])
 	{
 		if ($puzzles == NULL) {
 			echo "<h4>No puzzles in queue</h4>";
@@ -162,6 +162,21 @@
 		$statuses = getPuzzleStatuses();
 		foreach ($puzzles as $pid) {
 			$puzzleInfo = getPuzzleInfo($pid);
+
+      // This is totally the wrong way to do this. The right way involves
+      // writing SQL.
+      if ($filter) {
+        if ($filter[0] == "status" && $filter[1] != $puzzleinfo["pstatus"]) {
+          continue;
+        }
+        if ($filter[0] == "author" && !isAuthorOnPuzzle($filter[1], $pid)) {
+          continue;
+        }
+        if ($filter[0] == "editor" && !isEditorOnPuzzle($filter[1], $pid)) {
+          continue;
+        }
+      }
+
 			$title = $puzzleInfo["title"];
 			if ($title == NULL)
 				$title = '(untitled)';
