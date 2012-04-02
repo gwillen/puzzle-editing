@@ -166,7 +166,7 @@
       // This is totally the wrong way to do this. The right way involves
       // writing SQL.
       if ($filter) {
-        if ($filter[0] == "status" && $filter[1] != $puzzleinfo["pstatus"]) {
+        if ($filter[0] == "status" && $filter[1] != $puzzleInfo["pstatus"]) {
           continue;
         }
         if ($filter[0] == "author" && !isAuthorOnPuzzle($filter[1], $pid)) {
