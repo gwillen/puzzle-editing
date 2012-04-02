@@ -1083,6 +1083,11 @@ function getStatusNameForPuzzle($pid)
 	return get_element($sql);
 }
 
+function getEditorStats()
+{
+    return get_assoc_array("select fullname, count(pid) as pcount from editor_queue right join user_info on user_info.uid = editor_queue.uid group by fullname", "fullname", "pcount");
+}
+
 function getPuzzleStatuses()
 {
     return get_assoc_array("SELECT id, name FROM pstatus ORDER BY ord ASC", "id", "name");
