@@ -42,9 +42,9 @@ function isValidPuzzleFilter()
 			foot();
 			exit(1);
 		}
-		return [$key, $val];
+		return array($key, $val);
 	}
-	return [];
+	return array();
 }
 
 // Check that a valid puzzle is given in the URL.

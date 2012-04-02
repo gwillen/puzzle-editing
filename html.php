@@ -135,7 +135,7 @@
 <?php
 	}	
 	
-	function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $filter = [])
+	function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $filter = array())
 	{
 		if ($puzzles == NULL) {
 			echo "<h4>No puzzles in queue</h4>";
