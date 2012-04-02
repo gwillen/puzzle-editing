@@ -24,14 +24,14 @@ function validUserId($uid)
 	
 function isValidPuzzleFilter()
 {
-	if (isset($_SESSION['filterkey']) && isset($_SESSION['filtervalue'])) {
-		$key = $_SESSION['filterkey'];
+	if (isset($_GET['filterkey']) && isset($_GET['filtervalue'])) {
+		$key = $_GET['filterkey'];
 		if ($key != "status" && $key != "author" && $key != "editor") {
 			echo "Invalid sort key. What did you even do?";
 			foot();
 			exit(1);
 		}
-		$val = $_SESSION['filtervalue'];
+		$val = $_GET['filtervalue'];
 		if ($key == "status" && !validPuzzleStatus($val)) {
 			echo "Invalid puzzle status ID.";
 			foot();
