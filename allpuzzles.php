@@ -24,12 +24,12 @@
 
 	<table><tr><td>
 	<form method="get" action="allpuzzles.php">
-	<text type="hidden" name="filterkey" value="status">
+	<input type="hidden" name="filterkey" value="status">
 	<select name="filtervalue">
 <?php
 	$statuses = getPuzzleStatuses();
 	foreach ($statuses as $sid => $sname) {
-		echo "<option value='$sid'>$name</option>";
+		echo "<option value='$sid'>$sname</option>";
 	}
 ?>
 	</select>
@@ -38,7 +38,7 @@
 
 	</td><td>&nbsp;&nbsp;&nbsp;</td><td>
 	<form method="get" action="allpuzzles.php">
-	<text type="hidden" name="filterkey" value="editor">
+	<input type="hidden" name="filterkey" value="editor">
 	<select name="filtervalue">
 <?php
 	$editors = getAllEditors();
@@ -52,7 +52,7 @@
 	
 	</td><td>&nbsp;&nbsp;&nbsp;</td><td>
 	<form method="get" action="allpuzzles.php">
-	<text type="hidden" name="filterkey" value="author">
+	<input type="hidden" name="filterkey" value="author">
 	<select name="filtervalue">
 <?php
 	$authors = getAllAuthors();
