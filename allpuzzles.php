@@ -20,7 +20,52 @@
 	$filt = isValidPuzzleFilter();
 	
 	displayPuzzleStats($uid);
+?>
+
+	<table><tr><td>
+	<form method="get" action="allpuzzles.php">
+	<text type="hidden" name="filterkey" value="status">
+	<select name="filtervalue">
+<?php
+	$statuses = getPuzzleStatuses();
+	foreach ($statuses as $sid => $sname) {
+		echo "<option value='$sid'>$name</option>";
+	}
+?>
+	</select>
+	<input type="submit" value="Filter status">
+	</form>
+
+	</td><td>&nbsp;&nbsp;&nbsp;</td><td>
+	<form method="get" action="allpuzzles.php">
+	<text type="hidden" name="filterkey" value="editor">
+	<select name="filtervalue">
+<?php
+	$editors = getAllEditors();
+	foreach ($editors as $uid => $fullname) {
+		echo "<option value='$uid'>$fullname</option>";
+	}
+?>
+	</select>
+	<input type="submit" value="Filter editor">
+	</form>
 	
+	</td><td>&nbsp;&nbsp;&nbsp;</td><td>
+	<form method="get" action="allpuzzles.php">
+	<text type="hidden" name="filterkey" value="author">
+	<select name="filtervalue">
+<?php
+	$authors = getAllAuthors();
+	foreach ($authors as $uid => $fullname) {
+		echo "<option value='$uid'>$fullname</option>";
+	}
+?>
+	</select>
+	<input type="submit" value="Filter author">
+	</form>
+	</td></tr></table>
+<?php
+
 	$puzzles = getAllPuzzles();
 	displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, $filt);
 
