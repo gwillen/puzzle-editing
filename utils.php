@@ -1346,7 +1346,7 @@ function isSubbedOnPuzzle($uid, $pid)
 
 function subscribe($uid, $pid)
 {
-	$sql = sprintf("INSERT INTO email_sub (uid, pid) VALUES ('%s', '%s')",
+	$sql = sprintf("REPLACE INTO email_sub (uid, pid) VALUES ('%s', '%s')",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	query_db($sql);
 }
