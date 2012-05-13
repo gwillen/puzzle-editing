@@ -1053,7 +1053,7 @@ function canFactCheckPuzzle($uid, $pid)
 
 function canViewPuzzle($uid, $pid)
 {
-	return isLurker($uid) || isPuzzleInFinalFactChecking($pid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid);
+	return isLurker($uid) || isPuzzleInFinalFactChecking($pid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid) || isSpoiledOnPuzzle($uid, $pid);
 }
 
 function canChangeAnswers($uid)
