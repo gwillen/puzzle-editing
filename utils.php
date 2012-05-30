@@ -91,6 +91,12 @@ function postprodPony($pid)
 	return get_elements_null($sql);
 }
 
+function puzzleTransformer($pid)
+{
+	$sql = sprintf("SELECT name from transformers where id = '%s';", mysql_real_escape_string($pid));
+	return get_element($sql);
+}
+
 function isEditor($uid)
 {
 	return hasPriv($uid, 'addToEditingQueue');
@@ -614,7 +620,8 @@ function emailComment($uid, $pid, $cleanComment)
 	
 	$message = "$name commented on puzzle $pid:\n";
 	$message .= "$cleanComment";
-	$subject = "Comment on Puzzle $pid";
+	$transformer = puzzleTransformer($pid);
+	$subject = "Comment on $transformer (puzzle $pid)";
 	$link = URL . "/puzzle?pid=$pid";
 
 	$users = getSubbed($pid);
@@ -770,8 +777,9 @@ function removeSpoiledUser($uid, $pid, $removeUser)
 			$comment .= ', ';
 		$comment .= getUserName($user);
 		
-		$subject = "Spoiled on Puzzle $pid";
-		$message = "$name removed you as spoiled on puzzle $pid.";
+		$transformer = puzzleTransformer($pid);
+		$subject = "Spoiled on $transformer (puzzle $pid)";
+		$message = "$name removed you as spoiled on $transformer (puzzle $pid).";
 		$link = URL;
 		sendEmail($user, $subject, $message, $link);
 	}
@@ -830,8 +838,9 @@ function addSpoiledUser($uid, $pid, $addUser)
 		$comment .= getUserName($user);
 		
 		// Email new author
-		$subject = "Spoiled on Puzzle $pid";
-		$message = "$name added you as spoiled on puzzle $pid.";
+		$transformer = puzzleTransformer($pid);
+		$subject = "Spoiled on $transformer (puzzle $pid)";
+		$message = "$name added you as spoiled on $transformer (puzzle $pid).";
 		$link = URL;
 		sendEmail($user, $subject, $message, $link);
 	}
@@ -905,8 +914,9 @@ function addAuthors($uid, $pid, $add)
 		$comment .= getUserName($auth);
 		
 		// Email new author
-		$subject = "Author on Puzzle $pid";
-		$message = "$name added you as an author on puzzle $pid.";
+		$transformer = puzzleTransformer($pid);
+		$subject = "Author on $transformer (puzzle $pid)";
+		$message = "$name added you as an author on $transformer (puzzle $pid).";
 		$link = URL . "/puzzle?pid=$pid";
 		sendEmail($auth, $subject, $message, $link);
 
@@ -949,8 +959,9 @@ function removeAuthors($uid, $pid, $remove)
 		$comment .= getUserName($auth);
 		
 		// Email old author
-		$subject = "Author on Puzzle $pid";
-		$message = "$name removed you as an author on puzzle $pid.";
+		$transformer = puzzleTransformer($pid);
+		$subject = "Author on $transformer (puzzle $pid)";
+		$message = "$name removed you as an author on $transformer (puzzle $pid).";
 		$link = URL . "/author";
 		sendEmail($auth, $subject, $message, $link);
 	}
@@ -990,8 +1001,9 @@ function addEditors($uid, $pid, $add)
 		$comment .= getUserName($editor);
 		
 		// Email new editor
-		$subject = "Editor on Puzzle $pid";
-		$message = "$name added you as an editor to puzzle $pid.";
+		$transformer = puzzleTransformer($pid);
+		$subject = "Editor on $transformer (puzzle $pid)";
+		$message = "$name added you as an editor to $transformer (puzzle $pid).";
 		$link = URL . "/puzzle?pid=$pid";
 		sendEmail($editor, $subject, $message, $link);
 
@@ -1033,8 +1045,9 @@ function removeEditors($uid, $pid, $remove)
 		$comment .= getUserName($editor);
 		
 		// Email old editor
-		$subject = "Editor on Puzzle $pid";
-		$message = "$name removed you as an editor on puzzle $pid.";
+		$transformer = puzzleTransformer($pid);
+		$subject = "Editor on $transformer (puzzle $pid)";
+		$message = "$name removed you as an editor on $transformer (puzzle $pid).";
 		$link = URL . "/editor";
 		sendEmail($editor, $subject, $message, $link);
 	}
@@ -1233,13 +1246,14 @@ function changeNotes($uid, $pid, $notes)
 
 function emailTesters($pid, $status)
 {
+	$transformer = puzzleTransformer($pid);
 	$subject = "Puzzle $pid Status Change";
 	
 	if (!isStatusInTesting($status)) {
-		$message = "Puzzle $pid was removed from testing";
+		$message = "$transformer (puzzle $pid) was removed from testing";
 	} else {
 		$statusName = getPuzzleStatusName($status);
-		$message = "Puzzle $pid's status was changed to $statusName.";
+		$message = "$transformer (puzzle $pid)'s status was changed to $statusName.";
 	}
 	
 	$link = URL . "/testsolving";
