@@ -71,7 +71,9 @@
 	echo 'Edit Title, Summary and Description</a></p>';
 
 	echo "</div>";
-	
+
+	echo '<iframe width=570 height=340 border=0 frameborder=none src="http://widget.mibbit.com/?server=irc.manicsages.org&channel=%23hunt2013&nick=' . getUserUsername($uid) . '_%3F%3F%3F%3F"></iframe>';
+
 	// List various people working on the puzzle
 	echo "<div class='peopleInfo'>";
 	displayPeople($uid, $pid);
