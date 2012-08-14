@@ -19,6 +19,16 @@
 	
 	displayPuzzleStats($uid);
 	
+	echo "<h1>Factchecking</h1>";
+
+	?>
+        <form action="form-submit.php" method="post">
+                <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                Enter Puzzle ID to factcheck: <input type="text" name="pid" />
+                <input type="submit" name="FactcheckPuzzle" value="Go" />
+        </form>
+	<?php
+
 	echo '<br/>';
 	echo '<h3>Unclaimed Puzzles:</h3>';
 	$puzzles = getUnclaimedPuzzlesInFactChecking();
