@@ -206,6 +206,17 @@
 		exit(0);
 	}
 
+	if (isset($_POST['FactcheckPuzzle'])) {
+		$uid = $_POST['uid'];
+		$pid = $_POST['pid'];
+
+		if (!addToFactcheckQueue($uid, $pid))
+                        $_SESSION['failedToAdd'] = TRUE;
+
+		header("Location: " . URL . "/factcheck");
+		exit(0);
+	}
+
 	if (isset($_POST['TestAdminPuzzle'])) {
 		$uid = $_POST['uid'];
 		$pid = $_POST['pid'];

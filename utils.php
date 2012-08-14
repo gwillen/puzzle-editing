@@ -2222,6 +2222,16 @@ function canTestAdminPuzzle($uid, $pid)
 		&& isPuzzleInAddToTestAdminQueue($pid));
 }
 
+function addToFactcheckQueue($uid, $pid)
+{
+	if (!canFactCheckPuzzle($uid, $pid)) 
+		return FALSE;
+
+	$sql = sprintf("INSERT INTO factcheck_queue (uid, pid) VALUES ('%s', '%s')",
+			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
+	query_db($sql);
+}
+
 function addToTestAdminQueue($uid, $pid)
 {
 	if (!canTestAdminPuzzle($uid, $pid)) 
