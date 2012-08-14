@@ -206,6 +206,12 @@ function getLastVisit($uid, $pid)
 	return get_element_null($sql);
 }
 
+function getUserUsername($uid)
+{
+	$sql = sprintf("SELECT username FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
+	return get_element($sql);
+}
+
 function getUserName($uid)
 {
 	$sql = sprintf("SELECT fullname FROM user_info WHERE uid='%s'", mysql_real_escape_string($uid));
@@ -1335,7 +1341,7 @@ function uploadFiles($uid, $pid, $type, $file) {
 
 			addComment($uid, $pid, "A new <a href=\"$target_path\">$type</a> has been uploaded.",TRUE);
 		} else {
-			$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB)";
+			$_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB) " . serialize($file);
 		}
 	}
 }

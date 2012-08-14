@@ -136,7 +136,7 @@
 		
 		$type = $_POST['filetype'];
 		$file = $_FILES['fileupload'];
-			
+
 		uploadFiles($uid, $pid, $type, $file);
 		
 		header("Location: " . URL . "/puzzle?pid=" . $pid);
