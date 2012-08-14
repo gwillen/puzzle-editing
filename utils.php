@@ -301,7 +301,7 @@ function getSpoiledAsList($pid)
 
 function getFactcheckersAsList($pid)
 {
-  return getUserNameAsList("factcheck_queue", $pid);
+  return getUserNamesAsList("factcheck_queue", $pid);
 }
 
 function getFinishedTestersAsList($pid)
