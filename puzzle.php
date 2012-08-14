@@ -239,6 +239,7 @@ function displayPeople($uid, $pid)
 	<?php displayAuthors($uid, $pid); ?>
 	<?php displaySpoiled($uid, $pid); ?>
 	<?php displayEditors($uid, $pid); ?>
+	<?php displayFactcheckers($uid, $pid); ?>
 	<?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
 	<?php displayTestingAdmin($uid, $pid); ?>
 	</table>
@@ -393,6 +394,56 @@ function displayAddEditor($pid)
 	$editors = getAvailableEditorsForPuzzle($pid);
 	if ($editors != NULL)
 		makeOptionElements($editors, 'addEditor');	
+}
+
+function displayFactcheckers($uid, $pid)
+{
+?>
+		<tr>
+			<td class='peopleInfo'>
+				<strong>Factcheckers:</strong> <?php echo getFactcheckersAsList($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<table>
+					<form method="post" action="form-submit.php">
+					<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+					<input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+					<tr>
+						<td>
+							<p><strong>Remove Factchecker(s):</strong></p>
+							<?php echo displayRemoveFactchecker($pid)?>
+						</td>
+						<td>
+							<p><strong>Add Factchecker(s):</strong></p>
+							<?php echo displayAddFactchecker($pid); ?>
+						</td>
+					</tr>
+					<tr>
+						<td colspan="2">
+							<input type="submit" name="changeFactcheckers" value="Change Factcheckers" />
+						</td>
+					</tr>
+					</form>
+				</table>
+			</td>
+		</tr>
+<?php
+}
+
+function displayRemoveFactchecker($pid)
+{
+	$factcheckers = getFactcheckersForPuzzle($pid);
+	if ($factcheckers != NULL)
+		makeOptionElements($factcheckers, 'removeFactchecker');	
+}
+
+function displayAddFactchecker($pid)
+{
+	$factcheckers = getAvailableFactcheckersForPuzzle($pid);
+	if ($factcheckers != NULL)
+		makeOptionElements($factcheckers, 'addFactchecker');	
 }
 
 function displayTesters($uid, $pid)

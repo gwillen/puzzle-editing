@@ -162,6 +162,13 @@ function isTesterOnPuzzle($uid, $pid)
 	return has_result($sql);
 }
 
+function isFactcheckerOnPuzzle($uid, $pid)
+{
+  $sql = sprintf("SELECT * FROM factcheck_queue WHERE uid='%s' AND pid='%s'",
+      mysql_real_escape_string($uid), mysql_real_escape_string($pid));
+  return has_result($sql);
+}
+
 function isFormerTesterOnPuzzle($uid, $pid)
 {
 	$sql = sprintf("SELECT * FROM doneTesting WHERE uid='%s' AND pid='%s'",
@@ -250,6 +257,10 @@ function getSpoiledUsersForPuzzle($pid)
 	return getUsersForPuzzle("spoiled", $pid);
 }
 
+function getFactcheckersForPuzzle($pid)
+{
+  return getUsersForPuzzle("factcheck_queue", $pid);
+}
 
 
 // Get comma-separated list of users' names
@@ -286,6 +297,11 @@ function getCurrentTestersAsList($pid)
 function getSpoiledAsList($pid)
 {
 	return getUserNamesAsList("spoiled", $pid);
+}
+
+function getFactcheckersAsList($pid)
+{
+  return getUserNameAsList("factcheck_queue", $pid);
 }
 
 function getFinishedTestersAsList($pid)
@@ -680,6 +696,24 @@ function getAvailableAuthorsForPuzzle($pid)
 	return $authors;
 }
 
+function getAvailableFactcheckersForPuzzle($pid)
+{
+	// Get all users
+	$sql = 'SELECT uid FROM user_info';
+	$users = get_elements($sql);
+	
+	$fcs = NULL;
+	foreach ($users as $uid) {
+		if ($pid == FALSE || isFactcheckerAvailable($uid, $pid)) {
+			$fcs[$uid] = getUserName($uid);
+		}
+	}
+	
+	// Sort by name
+	natcasesort($fcs);
+	return $fcs;
+}
+
 function getAvailableSpoiledUsersForPuzzle($pid)
 {
 	// Get all users
@@ -704,6 +738,10 @@ function isAuthorAvailable($uid, $pid)
 	return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid));
 }
 
+function isFactcheckerAvailable($uid, $pid)
+{
+  return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid) && !isFactcheckerOnPuzzle($uid, $pid));
+}
 
 function getCurrentTestersAsEmailList($pid)
 {
@@ -892,6 +930,100 @@ function changeEditors($uid, $pid, $add, $remove)
 	mysql_query('COMMIT');
 }
 
+function changeFactcheckers($uid, $pid, $add, $remove)
+{
+	mysql_query('START TRANSACTION');
+	addFactcheckers($uid, $pid, $add);
+	removeFactcheckers($uid, $pid, $remove);
+	mysql_query('COMMIT');
+}
+
+function addFactcheckers($uid, $pid, $add)
+{
+	if ($add == NULL)
+		return;
+		
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify this puzzle.");
+		
+	$name = getUserName($uid);
+		
+	$comment = 'Added ';
+	foreach ($add as $fc) {
+		// Check that this factchecker is available for this puzzle
+		if (!isFactcheckerAvailable($fc, $pid)) {
+			utilsError(getUserName($fc) . ' is not available.');
+		}
+		
+		// Add factchecker to puzzle
+		$sql = sprintf("INSERT INTO factcheck_queue (pid, uid) VALUE ('%s', '%s')",
+				mysql_real_escape_string($pid), mysql_real_escape_string($fc));
+		query_db($sql);
+		
+		// Add to comment
+		if ($comment != 'Added ')
+			$comment .= ', ';
+		$comment .= getUserName($fc);
+		
+		// Email new factchecker
+		$transformer = puzzleTransformer($pid);
+		$subject = "Factchecker on $transformer (puzzle $pid)";
+		$message = "$name added you as a factchecker on $transformer (puzzle $pid).";
+		$link = URL . "/puzzle?pid=$pid";
+		sendEmail($fc, $subject, $message, $link);
+
+		// Subscribe factcheckers to comments on their puzzles
+		subscribe($fc, $pid);
+	}
+		
+	$comment .= ' as factchecker';
+	if (count($add) > 1)
+		$comment .= "s";
+		
+	addComment($uid, $pid, $comment, TRUE);
+}
+
+function removeFactcheckers($uid, $pid, $remove)
+{
+	if ($remove == NULL)
+		return;
+		
+	if (!canViewPuzzle($uid, $pid))
+		utilsError("You do not have permission to modify puzzle $pid.");
+		
+	$name = getUserName($uid);
+		
+	$comment = 'Removed ';
+	foreach ($remove as $fc) {	
+		// Check that this factchecker is assigned to this puzzle
+		if (!isFactcheckerOnPuzzle($fc, $pid))
+			utilsError(getUserName($fc) . " is not a factchecker on to puzzle $pid");
+			
+		// Remove factchecker from puzzle
+		$sql = sprintf("DELETE FROM factcheckers WHERE uid='%s' AND pid='%s'",
+				mysql_real_escape_string($fc), mysql_real_escape_string($pid));
+		query_db($sql);
+		
+		// Add to comment
+		if ($comment != 'Removed ')
+			$comment .= ', ';
+		$comment .= getUserName($fc);
+		
+		// Email old factchecker
+		$transformer = puzzleTransformer($pid);
+		$subject = "Factchecker on $transformer (puzzle $pid)";
+		$message = "$name removed you as a factchecker on $transformer (puzzle $pid).";
+		$link = URL . "/factcheck";
+		sendEmail($fc, $subject, $message, $link);
+	}
+	
+	$comment .= ' as factchecker';
+	if (count($remove) > 1)
+		$comment .= "s";
+		
+	addComment($uid, $pid, $comment, TRUE);
+}
+
 function addAuthors($uid, $pid, $add)
 {
 	if ($add == NULL)
@@ -936,7 +1068,6 @@ function addAuthors($uid, $pid, $add)
 		
 	addComment($uid, $pid, $comment, TRUE);
 }
-
 
 function removeAuthors($uid, $pid, $remove)
 {
