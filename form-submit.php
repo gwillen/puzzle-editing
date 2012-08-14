@@ -46,6 +46,26 @@
 		exit(0);
 	}	
 	
+	if (isset($_POST['changeFactcheckers'])) {
+		$pid = $_POST['pid'];
+		$uid = $_POST['uid'];
+		
+		if (isset($_POST['addFactchecker']))
+			$add = $_POST['addFactchecker'];
+		else
+			$add = NULL;
+			
+		if (isset($_POST['removeFactchecker']))
+			$remove = $_POST['removeFactchecker'];
+		else
+			$remove = NULL;
+		
+		changeFactcheckers($uid, $pid, $add, $remove);
+		
+		header("Location: " . URL . "/puzzle?pid=$pid");
+		exit(0);
+	}		
+
 	if (isset($_POST['changeAuthors'])) {
 		$pid = $_POST['pid'];
 		$uid = $_POST['uid'];
