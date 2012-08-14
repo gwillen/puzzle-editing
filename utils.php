@@ -1950,8 +1950,15 @@ function isPuzzleInFinalFactChecking($pid)
 	return has_result($sql);
 }
 
-function getPuzzlesInFactChecking() {
-	$sql = "SELECT puzzle_idea.id FROM puzzle_idea INNER JOIN pstatus ON puzzle_idea.pstatus=pstatus.id WHERE pstatus.needsFactcheck='1'";
+function getUnclaimedPuzzlesInFactChecking() {
+	$sql = "SELECT puzzle_idea.id FROM pstatus, puzzle_idea LEFT JOIN factcheck_queue ON puzzle_idea.id=factcheck_queue.pid WHERE puzzle_idea.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.uid IS NULL;"
+	$puzzles = get_elements_null($sql);
+	
+	return sortByLastCommentDate($puzzles);
+}
+
+function getClaimedPuzzlesInFactChecking() {
+	$sql = "SELECT puzzle_idea.id FROM puzzle_idea, pstatus, factcheck_queue WHERE puzzle_idea.pstatus=pstatus.id AND pstatus.needsFactcheck='1' AND factcheck_queue.pid=puzzle_idea.id;"
 	$puzzles = get_elements_null($sql);
 	
 	return sortByLastCommentDate($puzzles);

@@ -19,9 +19,15 @@
 	
 	displayPuzzleStats($uid);
 	
-	$puzzles = getPuzzlesInFactChecking();
+	echo '<br/>';
+	echo '<h3>Unclaimed Puzzles:</h3>';
+	$puzzles = getUnclaimedPuzzlesInFactChecking();
 	displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);
 
+	echo '<br/>';
+	echo '<h3>Already Claimed:</h3>';
+	$puzzles = getClaimedPuzzlesInFactChecking();
+	displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);
 	
 	// End HTML
 	foot();
