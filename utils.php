@@ -740,7 +740,7 @@ function isAuthorAvailable($uid, $pid)
 
 function isFactcheckerAvailable($uid, $pid)
 {
-  return (!isAuthorOnPuzzle($uid, $pid) && !isEditorOnPuzzle($uid, $pid) && !isTesterOnPuzzle($uid, $pid) && !isFactcheckerOnPuzzle($uid, $pid));
+  return (!isAuthorOnPuzzle($uid, $pid) && !isFactcheckerOnPuzzle($uid, $pid));
 }
 
 function getCurrentTestersAsEmailList($pid)
