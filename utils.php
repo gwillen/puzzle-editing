@@ -1000,7 +1000,7 @@ function removeFactcheckers($uid, $pid, $remove)
 			utilsError(getUserName($fc) . " is not a factchecker on to puzzle $pid");
 			
 		// Remove factchecker from puzzle
-		$sql = sprintf("DELETE FROM factcheckers WHERE uid='%s' AND pid='%s'",
+		$sql = sprintf("DELETE FROM factcheck_queue WHERE uid='%s' AND pid='%s'",
 				mysql_real_escape_string($fc), mysql_real_escape_string($pid));
 		query_db($sql);
 		
