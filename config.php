@@ -1,21 +1,13 @@
 <?php
         // require_once "/var/www/htmlpurifier-4.0.0/library/HTMLPurifier.auto.php";
-        require_once "HTMLPurifier.auto.php";
+        require_once "/usr/share/php-htmlpurifier/library/HTMLPurifier.auto.php";
 
         ini_set('default_charset', 'UTF-8');
         ini_set('session.gc_maxlifetime','86400');
         
         session_start();
-        if (!defined("TEST_MODE")) {
-          define("TEST_MODE", false);
-        }
-        if (!TEST_MODE) {
-          define('DB_NAME', 'hunt2013');
-        } else {
-          define('DB_NAME', 'hunt2013_test');
-        }
         define("DEVMODE", FALSE);
-        define("URL", "http://localhost/~gwillen/puzzle-editing");
+        define("URL", "http://z.manicsages.org/puzzle");
         
         // $dev = preg_match("/\/(.*)\/writing.*/", $_SERVER["SCRIPT_NAME"], $matches);
         // if ($dev) {
