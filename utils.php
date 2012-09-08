@@ -2255,6 +2255,12 @@ function canAcceptDrafts($pid)
 	return has_result($sql);
 }
 
+function grantFactcheckPowers($uid)
+{
+  $sql = sprintf("INSERT INTO jobs (uid, jid) VALUES (%d, (select jid from priv where name = 'Fact Checker'))", $uid);
+  query_db($sql);
+}
+
 function utilsError($msg)
 {
 	mysql_query('ROLLBACK');

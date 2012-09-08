@@ -88,7 +88,7 @@
 				} else if (f.pass1.value != f.pass2.value) {
 					alert("Passwords do not match.");
 					return false;
-				} else if (f.pass1.length < 7) {
+				} else if (f.pass1.value.length < 6) {
 					alert("Password must be at least 6 characters.");
 					return false;
 				}

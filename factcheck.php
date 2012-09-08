@@ -12,9 +12,30 @@
 		
 	// Check for permissions
 	if (!isFactChecker($uid)) {
-		echo "You do not have permission for this page.";
+?>
+<h3>Not a factchecker</h3>
+<br>
+You are not currently a factchecker. 
+Anybody can factcheck -- please start by reading
+<a href="/HowToFactcheck">the instructions</a>.
+Once you've done that, the button below will grant you factchecking access.
+<br>
+<br>
+<b>THIS WILL LET YOU VIEW ALL PUZZLES IN FACTCHECKING. PLEASE DON'T ABUSE
+IT.</b>
+<br>
+<br>
+It's fine if you claim a puzzle, then realize you have to throw it back for
+whatever reason. But please don't go through viewing all the puzzles for fun. :-)
+<br>
+<br>
+<form action="form-submit.php" method="post">
+<input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+<input type="submit" name="SelfAddFactchecker" value="I have read the instructions" />
+</form>
+<?php
 		foot();
-		exit(1);
+    exit(1);
 	}
 	
 	displayPuzzleStats($uid);
@@ -42,4 +63,3 @@
 	// End HTML
 	foot();
 ?>
-	
