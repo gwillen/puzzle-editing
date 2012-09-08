@@ -15,7 +15,11 @@
 ?>
 <h3>Not a factchecker</h3>
 <br>
-You are not currently a factchecker. 
+You are not currently a factchecker. (If you are a blind testsolver, please do
+not use this page. Instead, please contact gwillen@nerdnet.org if you wish to
+be a factchecker.)
+<br>
+<br>
 Anybody can factcheck -- please start by reading
 <a href="/HowToFactcheck">the instructions</a>.
 Once you've done that, the button below will grant you factchecking access.
