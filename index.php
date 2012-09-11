@@ -18,7 +18,13 @@
 	$hrs=floor($tth/(60 * 60))-(24*$days);
 	$mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
 
-	echo '<iframe width=570 height=340 border=0 frameborder=none src="http://widget.mibbit.com/?server=irc.manicsages.org&channel=%23hunt2013&nick=' . getUserUsername($uid) . '_%3F%3F%3F%3F&autoConnect=true"></iframe>';
+  echo '<h2><font color="red">NEW:</font> Manic Sages social hours, <font
+  color="red">Wednesday and Thursday @ 10 PM US Eastern time</font>.
+  Join us in the chatbox below (or on irc.manicsages.org #hunt2013)!</h2>';
+  echo '<br>';
+  echo '<iframe width=570 height=340 border=0 frameborder=none
+  src="http://widget.mibbit.com/?server=irc.manicsages.org&channel=%23hunt2013&nick='
+  . getUserUsername($uid) . '_%3F%3F%3F%3F&autoConnect=true"></iframe>';
 
 	echo "<h2>Latest Updates:</h2>\n";
 		
