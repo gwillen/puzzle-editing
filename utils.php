@@ -2230,6 +2230,8 @@ function addToFactcheckQueue($uid, $pid)
 	$sql = sprintf("INSERT INTO factcheck_queue (uid, pid) VALUES ('%s', '%s')",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	query_db($sql);
+	// Subscribe factcheckers to comments on their puzzles
+	subscribe($uid, $pid);
 }
 
 function addToTestAdminQueue($uid, $pid)
@@ -2240,6 +2242,8 @@ function addToTestAdminQueue($uid, $pid)
 	$sql = sprintf("INSERT INTO testAdminQueue (uid, pid) VALUES ('%s', '%s')",
 			mysql_real_escape_string($uid), mysql_real_escape_string($pid));
 	query_db($sql);
+	// Subscribe testadmins to comments on their puzzles
+	subscribe($uid, $pid);
 }
 
 function getInTestAdminQueue($uid)
