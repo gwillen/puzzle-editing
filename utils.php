@@ -1580,6 +1580,14 @@ function getPuzzlesForAuthor($uid)
 	return sortByLastCommentDate($puzzles);
 }
 
+function getSpoiledPuzzles($uid)
+{
+	$sql = sprintf("SELECT pid FROM spoiled WHERE uid='%s'", mysql_real_escape_string($uid));
+	$puzzles = get_elements_null($sql);
+	
+	return sortByLastCommentDate($puzzles);
+}
+
 function getLastCommentDate($pid)
 {
 	$sql = sprintf("SELECT MAX(timestamp) FROM comments WHERE pid='%s'", mysql_real_escape_string($pid));
