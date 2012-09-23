@@ -55,6 +55,11 @@ whatever reason. But please don't go through viewing all the puzzles for fun. :-
 	<?php
 
 	echo '<br/>';
+	echo '<h3>Your Puzzles:</h3>';
+	$puzzles = getPuzzlesForFactchecker($uid);
+	displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);
+
+	echo '<br/>';
 	echo '<h3>Unclaimed Puzzles:</h3>';
 	$puzzles = getUnclaimedPuzzlesInFactChecking();
 	displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);

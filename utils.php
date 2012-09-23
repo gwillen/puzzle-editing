@@ -1580,6 +1580,14 @@ function getPuzzlesForAuthor($uid)
 	return sortByLastCommentDate($puzzles);
 }
 
+function getPuzzlesForFactchecker($uid)
+{
+	$sql = sprintf("SELECT pid FROM factcheck_queue WHERE uid='%s'", mysql_real_escape_string($uid));
+	$puzzles = get_elements_null($sql);
+	
+	return sortByLastCommentDate($puzzles);
+}
+
 function getSpoiledPuzzles($uid)
 {
 	$sql = sprintf("SELECT pid FROM spoiled WHERE uid='%s'", mysql_real_escape_string($uid));
