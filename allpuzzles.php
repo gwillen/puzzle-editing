@@ -42,6 +42,7 @@
 	<select name="filtervalue">
 <?php
 	$editors = getAllEditors();
+	asort($editors);
 	foreach ($editors as $uid => $fullname) {
 		echo "<option value='$uid'>$fullname</option>";
 	}
@@ -56,6 +57,7 @@
 	<select name="filtervalue">
 <?php
 	$authors = getAllAuthors();
+	asort($authors);
 	foreach ($authors as $uid => $fullname) {
 		echo "<option value='$uid'>$fullname</option>";
 	}
