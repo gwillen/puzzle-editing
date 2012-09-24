@@ -1598,8 +1598,8 @@ function getSpoiledPuzzles($uid)
 
 function getLastCommenter($pid)
 {
-	$sql = sprintf("SELECT fullname FROM user_info, comments WHERE pid='%s' and user_info.uid=comments.uid order by timestamp desc limit 1", mysql_real_escape_string($pid));
-	return get_element_null($sql);
+        $sql = sprintf("SELECT fullname FROM user_info, comments WHERE pid='%s' and user_info.uid=comments.uid order by timestamp desc limit 1", mysql_real_escape_string($pid));
+        return get_element_null($sql);
 }
 
 function getLastCommentDate($pid)

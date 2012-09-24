@@ -153,7 +153,7 @@
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Summary</th>';} ?>
                                 <?php if ($showNotes) {echo '<th class="puzzidea">Status Notes</th>';} ?>
                                 <?php if ($showAnswerAndSummary) {echo '<th class="puzzidea">Answer</th>';} ?>
-				<?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
+                                <?php if (!$test) { echo '<th class="puzzidea">Last Commenter</th>';} ?>
                                 <?php if (!$test) { echo '<th class="puzzidea">Last Comment</th>';}?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
@@ -187,7 +187,7 @@
                         $transformer = puzzleTransformer($pid);
 
                         $lastComment = getLastCommentDate($pid);
-			$lastCommenter = getLastCommenter($pid);
+                        $lastCommenter = getLastCommenter($pid);
                         $lastVisit = getLastVisit($uid, $pid);
 
                         if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test)
@@ -206,7 +206,7 @@
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . $puzzleInfo["summary"] . "</td>";} ?>
                                 <?php if ($showNotes) {echo "<td class='puzzidea'>" . $puzzleInfo["notes"] . "</td>";} ?>
                                 <?php if ($showAnswerAndSummary) {echo "<td class='puzzidea'>" . getAnswersForPuzzleAsList($pid) . "</td>";} ?>
-				<?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
+                                <?php if (!$test) {echo "<td class='puzzidea'>$lastCommenter</td>";} ?>
                                 <?php if (!$test) {echo "<td class='puzzidea'>$lastComment</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
