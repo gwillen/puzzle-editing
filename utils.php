@@ -1596,6 +1596,12 @@ function getSpoiledPuzzles($uid)
         return sortByLastCommentDate($puzzles);
 }
 
+function getLastCommenter($pid)
+{
+	$sql = sprintf("SELECT fullname FROM user_info, comments WHERE pid='%s' and user_info.uid=comments.uid order by timestamp desc limit 1", mysql_real_escape_string($pid));
+	return get_element_null($sql);
+}
+
 function getLastCommentDate($pid)
 {
         $sql = sprintf("SELECT MAX(timestamp) FROM comments WHERE pid='%s'", mysql_real_escape_string($pid));
