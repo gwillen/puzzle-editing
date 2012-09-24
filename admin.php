@@ -6,10 +6,10 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("admin");
-        
+
         // Check for admin bits
         if (!isServerAdmin($uid)) {
                 echo "<h3> You do not have permissions for this page. </h3>";
@@ -19,8 +19,8 @@
 ?>
         <p><a href="https://z.manicsages.org/phpmyadmin/">phpMyAdmin</a></p>
 <?php
-        
-        
+
+
         // End HTML
         foot();
 ?>

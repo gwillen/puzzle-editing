@@ -6,19 +6,19 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-                        
+
         // Start HTML
         head("editor");
-                
+
         // Check for editor permissions
         if (!isEditor($uid)) {
                 echo "You do not have permission for this page.";
                 foot();
                 exit(1);
         }
-        
+
         displayPuzzleStats($uid);
-        
+
 ?>
         <form action="form-submit.php" method="post">
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
@@ -32,5 +32,5 @@
 
         // End HTML
         foot();
-        
+
 ?>

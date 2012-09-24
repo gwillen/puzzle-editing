@@ -7,7 +7,7 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("home");
 
@@ -27,7 +27,7 @@
   . getUserUsername($uid) . '_%3F%3F%3F%3F&autoConnect=true"></iframe>';
 
         echo "<h2>Latest Updates:</h2>\n";
-                
+
         // Display index page
         // Put messages to the team here (separate for blind and non-blind solvers?)
 ?>

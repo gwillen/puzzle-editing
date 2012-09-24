@@ -6,14 +6,14 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("spoiled");
-?>        
+?>
         <h3>&nbsp;</h3>
         <h3>Puzzles you're spoiled on</h3>
-        
-<?php        
+
+<?php
         $puzzles = getSpoiledPuzzles($uid);
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE);
 

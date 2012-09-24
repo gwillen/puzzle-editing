@@ -7,17 +7,17 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-                
+
         // Start HTML
         head("testadmin");
-                
+
         // Check for permissions
         if (!isTestingAdmin($uid) && !isLurker($uid)) {
                 echo "Sorry, you're not a testing admin.";
                 foot();
                 exit(1);
         }
-        
+
         echo "<h1>Test Queue</h1>";
 
         ?>
@@ -28,16 +28,16 @@
         </form>
 
         <br />
-        <? 
+        <?
         $inTesting = count(getPuzzlesInTesting());
         $numNeedAdmin = count(getPuzzlesNeedTestAdmin());
-        
+
         echo "<h3>There are currently $inTesting puzzles in testing</h3>";
         echo "<h3>$numNeedAdmin puzzles need a testing admin</h3>";
         echo "<br />";
-        
+
         if (isTestingAdmin($uid)) {
-        
+
                 if (getPuzzleForTestAdminQueue($uid) == FALSE) {
                         echo '<strong>No Puzzles To Add</strong>';
                 } else {
@@ -48,25 +48,25 @@
                                 </form>
 <?php
                 }
-                
+
                 displayTestQueue($uid);
         }
-        
+
         echo "<h1>Puzzles needing testadmin</h1>";
         $testPuzzles = getPuzzlesNeedTestAdmin();
         displayQueue($uid, $testPuzzles, FALSE, FALSE, FALSE, FALSE, FALSE);
-        
-        echo "<h1>Testing Summary</h1>";        
+
+        echo "<h1>Testing Summary</h1>";
         displayTestingSummary();
 
         // End HTML
         foot();
-        
+
 //------------------------------------------------------------------------
 function displayTestQueue($uid)
 {
         $puzzles = getInTestAdminQueue($uid);
-        
+
         $puzzles = sortByLastCommentDate($puzzles);
 
         if ($puzzles == NULL) {
@@ -75,25 +75,25 @@ function displayTestQueue($uid)
                 displayQueue($uid, $puzzles, TRUE, TRUE, FALSE, FALSE, TRUE);
         }
 }
-        
+
 function displayTestingSummary()
 {
         $sql = sprintf("SELECT uid, pid from test_queue");
         $result = get_rows_null($sql);
-        
+
         if ($result == NULL)
                 return;
 
         echo '<style type="text/css">';
         echo '.testingtable, .testingtable a { color: #999999; }';
         echo '.testingtable .name, .testingtable .current, .testingtable .past { color: #000000; font-weight: bold; }';
-        
+
         $currqueue = NULL;
         foreach($result as $r) {
                 $currclass = NULL;
                 $uid = $r['uid'];
                 $pid = $r['pid'];
-                
+
                 if (isset($currqueue[$uid]))
                         $currqueue[$uid] .= "$pid ";
                 else
@@ -104,11 +104,11 @@ function displayTestingSummary()
         echo "</style>\n";
 
         $sql = sprintf("SELECT user_info.uid, user_info.username, comments.id, type, timestamp, pid FROM comments
-                        LEFT JOIN user_info on comments.uid = user_info.uid WHERE comments.type = 5 
+                        LEFT JOIN user_info on comments.uid = user_info.uid WHERE comments.type = 5
                         ORDER BY user_info.username, comments.pid");
         $result = query_db($sql);
         $r = mysql_fetch_assoc($result);
-        
+
         $arr = NULL;
         while ($r) {
                 $uid = $r['uid'];
@@ -116,7 +116,7 @@ function displayTestingSummary()
                 $id = $r['id'];
                 $timestamp = $r['timestamp'];
                 $name = getUserName($uid);
-              
+
                 $arr[$uid] = "<tr><td class='name'>$name</td><td>";
                 $arr[$uid] .= '<span class="current">Current queue: ' . print_r($currqueue[$uid], true) . '</span><br />';
                 $arr[$uid] .= '<span class="past">Past comments: </span><br />';

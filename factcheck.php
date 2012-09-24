@@ -6,10 +6,10 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("factcheck");
-                
+
         // Check for permissions
         if (!isFactChecker($uid)) {
 ?>
@@ -41,9 +41,9 @@ whatever reason. But please don't go through viewing all the puzzles for fun. :-
                 foot();
     exit(1);
         }
-        
+
         displayPuzzleStats($uid);
-        
+
         echo "<h1>Factchecking</h1>";
 
         ?>
@@ -68,7 +68,7 @@ whatever reason. But please don't go through viewing all the puzzles for fun. :-
         echo '<h3>Already Claimed:</h3>';
         $puzzles = getClaimedPuzzlesInFactChecking();
         displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);
-        
+
         // End HTML
         foot();
 ?>

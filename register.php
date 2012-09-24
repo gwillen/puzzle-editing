@@ -3,7 +3,7 @@
         require_once "utils.php";
         require_once "db-func.php";
         require_once "config.php";
-        
+
         // Start HTML
         head();
 
@@ -37,8 +37,8 @@
 
         // End HTML
         foot();
-        
-//------------------------------------------------------------------------        
+
+//------------------------------------------------------------------------
         function checkEmailForm()
         {
 ?>
@@ -97,7 +97,7 @@
                         }
                 //]]>
                 </script>
-                
+
                 <form enctype="multipart/form-data" method="post" action="<?php echo SELF; ?>" onsubmit="return validate(this)">
                         <table>
                                 <tr>
@@ -152,7 +152,7 @@
                 </form>
 <?php
         }
-        
+
 //------------------------------------------------------------------------
         function checkEmail($email, $username)
         {
@@ -175,7 +175,7 @@
                         return $r[0];
                 }
         }
-        
+
         function register()
         {
                 $data = $_POST;
@@ -196,7 +196,7 @@
                         return "Password must be at least 6 characters";
                 if ($data['id'] == "")
                         return "Error: missing id";
-                
+
                 if (alreadyRegistered($id)) {
                         if (!checkPassword($data['username'], $data['pass1'])) {
                                 return 'Incorrect Password. Please try again.';
@@ -209,7 +209,7 @@
                 } else {
                         $pic = pictureHandling($id, $picture);
                 }
-                
+
                 $purifier = new HTMLPurifier();
                 $id = $purifier->purify($id);
                 $username = $purifier->purify($data['username']);
@@ -265,7 +265,7 @@
                         return TRUE;
                 }
         }
-        
+
         function pictureHandling($id, $picture)
         {
                 if ($picture == NULL)        // No file uploaded
@@ -276,7 +276,7 @@
                         echo "Problem: uploaded file is zero length";
                         return "";
               }
-            
+
               if (($picture['type'] != "image/jpeg") &&
                             ($picture['type'] != "image/jpg") &&
                             ($picture['type'] != "image/png") &&
@@ -284,42 +284,42 @@
                       echo "Problem: file is not a proper png, gif, jpg, or jpeg";
                       return "";
                     }
-                    
+
                     if (!is_uploaded_file($picture['tmp_name'])) {
                       echo "Problem: possible file upload attack";
                         return "";
             }
-    
+
             $upfile = picName($id, $picture['name']);
             $thumb = thumbName($id);
-    
+
             if (!move_uploaded_file($picture['tmp_name'], $upfile)) {
-                      echo "Problem: Could not move picture into pictures directory"; 
+                      echo "Problem: Could not move picture into pictures directory";
                       return "";
             }
-            
+
             makeThumb($upfile, $thumb);
-            
+
             return $upfile;
         }
-        
+
         function picName($id, $name)
         {
                 return PICPATH . $id . "--" . $name;
         }
-        
+
         function thumbName($id)
         {
                 return PICPATH . "thumbs/$id.jpg";
         }
-        
+
         function makeThumb($uploaded, $thumbName)
         {
                 $maxW = 120;
                 $maxH = 120;
-                
+
                 list($width, $height, $type) = getimagesize($uploaded);
-                
+
                 // If the image is too big, scale it down
                 // From kvslaap on http://us2.php.net/manual/en/function.imagecopyresized.php
                 $imgratio = ($width / $height);
@@ -330,9 +330,9 @@
                         $newH = $maxH;
                         $newW = ($maxH * $imgratio);
                 }
-                
+
                 $thumb = imagecreatetruecolor($newW, $newH);
-                
+
                 if ($type == IMAGETYPE_JPEG) {
                         $source = imagecreatefromjpeg($uploaded);
                 } else if ($type == IMAGETYPE_GIF) {
@@ -343,7 +343,7 @@
                         echo "Unrecognized file type.";
                         exit(1);
                 }
-                
+
                 imagecopyresized($thumb, $source, 0, 0, 0, 0, $newW, $newH, $width, $height);
                 imagejpeg($thumb, $thumbName);
         }

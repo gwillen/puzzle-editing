@@ -15,18 +15,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        
+
         <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico" />
-        
+
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="css/reset-min.css" />
         <link rel="stylesheet" type="text/css" href="css/base-min.css" />
         <link rel="stylesheet" type="text/css" href="css/fonts-min.css" />
         <link rel="stylesheet" type="text/css" href="css/style.css" />
         <?php if ($selnav == "people" || $selnav == "account") { ?> <link rel="stylesheet" type="text/css" href="css/profiles.css" /> <?php } ?>
-        
+
         <title>Puzzletron</title>
-        
+
         <script type='text/javascript' src='jquery-1.4.2.js'></script>
         <script type='text/javascript' src='jquery.tablesorter.min.js'></script>
         <script type="text/javascript" src='js.js'></script>
@@ -67,24 +67,24 @@
                         <div style="clear:both;"></div>
         </div>
         <div id="body">
-<?php                
+<?php
         }
-        
+
         function foot()
         {
-?>        
+?>
         </div>
         <div id="footer">
                 <hr />
                 <p>This is the website for the hunt writing team. For technical assistance, please contact the <a href="mailto:tech@manicsages.org">Server Administrators</a>.  The original authors of this software are Kate Baker and Metaphysical Plant.  This software is available <a href="http://github.com/mysteryhunt/puzzle-editing/">on GitHub</a> under the Simplified BSD license.  The copyrights for the puzzles and comments contained herein are retained by the puzzle authors.</p>
         </div>
-</div>                
+</div>
 </body>
 </html>
-        
-<?php        
+
+<?php
         }
-        
+
         function printPerson($p)
         {
                 $id = $p['uid'];
@@ -99,14 +99,14 @@
                 }
 
                 $pic = "<img src=\"nophoto.gif\" />";
-                if ($picture != "") {        
+                if ($picture != "") {
                         $picsrc = "uploads/pictures/thumbs/$id.jpg";
                         if (file_exists($picsrc))
                                 $pic = "<img src=\"".$picsrc."\" />";
                 }
-                                                
+
                 $jobNames = getUserJobsAsList($id);
-                ?>                
+                ?>
                 <div class="<?php echo ($jobNames) ? "specprofilebox" : "profilebox"; ?>">
                         <div class="profileimg"><?php echo $pic ?></div>
                         <div class="profiletxt">
@@ -134,8 +134,8 @@
                         <div class="profilefooter"></div>
                 </div>
 <?php
-        }        
-        
+        }
+
         function displayQueue($uid, $puzzles, $showNotes, $showAnswerAndSummary, $showAuthorsAndEditors, $test, $showTesters, $filter = array())
         {
                 if ($puzzles == NULL) {
@@ -160,7 +160,7 @@
                         </tr>
                 </thead>
                 <tbody>
-<?php 
+<?php
                 $statuses = getPuzzleStatuses();
                 foreach ($puzzles as $pid) {
                         $puzzleInfo = getPuzzleInfo($pid);
@@ -184,15 +184,15 @@
                                 $title = '(untitled)';
 
                         $transformer = puzzleTransformer($pid);
-                        
+
                         $lastComment = getLastCommentDate($pid);
                         $lastVisit = getLastVisit($uid, $pid);
-                        
-                        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test) 
+
+                        if (($lastVisit == NULL || strtotime($lastVisit) < strtotime($lastComment)) || $test)
                                 echo '<tr class="puzz-new">';
                         else
                                 echo '<tr class="puzz">';
-                                
+
                         if ($test)
                                 echo "<td class='puzzidea'><a href='test?pid=$pid'>$pid</a></td>";
                         else
@@ -216,41 +216,41 @@
                 </table>
 <?php
         }
-        
+
 // Make groups of checkboxes
 // Takes an associative array and the name of the form element
 function makeOptionElements($toDisplay, $name)
 {
         $maxLength = 5;
         $maxCol = 10;
-        
+
         // Figure out how many columns are necessary to maintain max length
         // Use maxCol to keep from having too many columns
         $numCol = min(ceil(count(array_keys($toDisplay))/$maxLength), $maxCol);
-        
+
         $i = 1;
         echo '<table>';
         foreach ($toDisplay as $key => $value) {
                 if ($key == NULL)
                         continue;
-                
+
                 // Start a new row, if necessary
                 if (($i % $numCol) == 1)
                         echo '<tr>';
-                
+
                 // Add answer information
                 echo '<td>';
                 echo "<input type='checkbox' name='$name" . "[]' value='$key' />";
                 echo '</td>';
                 echo "<td>$value</td>";
-                
+
                 // End row, if number of columns reached
                 if (($i % $numCol) == 0)
                         echo '</tr>';
-                
+
                 $i++;
         }
-        
+
         // Close last row, if necessary
         if (($i % $numCol) != 1)
                 echo '</tr>';
@@ -260,15 +260,15 @@ function makeOptionElements($toDisplay, $name)
 function displayPuzzleStats($uid)
 {
         $max_rows = 6;
-        
+
         $totalNumberOfPuzzles = count(getAllPuzzles());
         $numberOfEditors = getNumberOfEditorsOnPuzzles();
         $moreThanThree = $totalNumberOfPuzzles - $numberOfEditors['0'] - $numberOfEditors['1'] - $numberOfEditors['2'] - $numberOfEditors['3'];
-                                                        
+
         $userNumbers = getNumberOfPuzzlesForUser($uid);
-        
+
         $editor = $userNumbers['editor'];
-                
+
         $tester = $userNumbers['currentTester'];
         if ($userNumbers['doneTester'] > 0)
                 $tester .= ' (+' . $userNumbers['doneTester'] . ' done)';
@@ -330,11 +330,11 @@ function displayPuzzleStats($uid)
                                         </tr>
                                 </table>
                         </td>
-<?php 
+<?php
 
                 $puzzleStatuses = getPuzzleStatuses();
                 $pstatusCol = ceil(count($puzzleStatuses) / $max_rows) * 2;
-                
+
                 $statuses = NULL;
                 $statusCounts = getPuzzleStatusCounts();
                 foreach ($puzzleStatuses as $sid => $name) {
@@ -351,15 +351,15 @@ function displayPuzzleStats($uid)
                                         <tr>
                                                 <th class="p-stats" colspan="<?php echo $pstatusCol; ?>">Puzzle Status</th>
                                         </tr>
-<?php 
+<?php
                 for ($row = 0; $row < $max_rows; $row++) {
                         for ($col = 0; $col < ($pstatusCol / 2); $col++) {
                                 $n = $row + ($col * $max_rows);
-                        
+
                                 if ($col==0)
                                         echo '
                                                 <tr>';
-                        
+
                                 if ($n >= count($puzzleStatuses)) {
                                         echo '
                                                 <td></td>';
@@ -369,13 +369,13 @@ function displayPuzzleStats($uid)
                                         $num = $statuses[$n];
                                         $name = $num['name'];
                                         $count = $num['count'];
-                                
+
                                         echo '
                                                 <td class="p-stats">' . $name . '</td>';
                                         echo '
                                                 <td class="p-stats">' . $count . '</td>';
                                 }
-                                
+
                                 if ($col == ($pstatusCol/2 - 1)) {
                                         echo '
                                                 </tr>';
@@ -384,7 +384,7 @@ function displayPuzzleStats($uid)
                 }
 ?>
                                 </table>
-                        </td>                        
+                        </td>
                         </tr>
                 </table>
 <?php

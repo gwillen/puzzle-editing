@@ -6,10 +6,10 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("allpuzzles");
-                
+
         // Check for lurker permissions
         if (!canSeeAllPuzzles($uid)) {
                 echo "You do not have permission for this page.";
@@ -18,7 +18,7 @@
         }
 
         $filt = isValidPuzzleFilter();
-        
+
         displayPuzzleStats($uid);
 ?>
 
@@ -50,7 +50,7 @@
         </select>
         <input type="submit" value="Filter editor">
         </form>
-        
+
         </td><td>&nbsp;&nbsp;&nbsp;</td><td>
         <form method="get" action="allpuzzles.php">
         <input type="hidden" name="filterkey" value="author">
@@ -71,8 +71,8 @@
         $puzzles = getAllPuzzles();
         displayQueue($uid, $puzzles, TRUE, TRUE, TRUE, FALSE, FALSE, $filt);
 
-        
+
         // End HTML
         foot();
 ?>
-        
+

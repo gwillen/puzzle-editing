@@ -2,7 +2,7 @@
         require_once "config.php";
         require_once "utils.php";
         require_once "html.php";
-        
+
         if (isset($_SESSION['uid'])) {
                 head();
                 echo '<h3> You are logged in. Would you like to <a href="logout.php">log out</a>?</h3>';
@@ -17,7 +17,7 @@
                 head();
                 loginForm();
         }
-        
+
         // End the HTML
         foot();
 
@@ -26,7 +26,7 @@
         {
 ?>
                 <h3> Need to <a href="register.php">register</a>?</h3>
-                
+
                 <form method="post" action="<?php echo SELF; ?>">
                         <table>
                                 <tr>
@@ -43,14 +43,14 @@
                 <p>If you've forgotten your password, you can e-mail <a href="mailto:tech@manicsages.org">tech@manicsages.org</a> for a new one.</p>
 <?php
         }
-        
+
 //------------------------------------------------------------------------
         // Try to log in user
         // Redirects to main page if successful
         function login($username, $pass)
         {
-                $sql = sprintf("SELECT uid FROM user_info WHERE 
-                                                username='%s' AND 
+                $sql = sprintf("SELECT uid FROM user_info WHERE
+                                                username='%s' AND
                                                 password=AES_ENCRYPT('%s', '%s%s')",
                                                 mysql_real_escape_string($username),
                                                 mysql_real_escape_string($pass),
@@ -61,11 +61,11 @@
                         // Username/password combination not in database
                         return FALSE;
                 }
-                
+
                 // Store uid in SESSION
                 $r = mysql_fetch_assoc($result);
                 $_SESSION['uid'] = $r['uid'];
-                
+
                 header("Location: " . URL . "/");
         }
 ?>

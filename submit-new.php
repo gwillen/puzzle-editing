@@ -6,49 +6,49 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
-        
+
+
         // Start HTML
         head();
-        
+
         // Check if form was submitted
         if (isset($_POST) && isset($_POST['newIdea'])) {
                 $title = $_POST['title'];
                 $summary = $_POST['summary'];
                 $description = $_POST['description'];
                 $coauthors = $_POST['coauthor'];
-                
+
                 $purifier = new HTMLPurifier();
                 $cleanTitle = $purifier->purify($title);
                 $cleanSummary = $purifier->purify($summary);
                 $cleanDescription = $purifier->purify($description);
-                
+
                 if ($summary == '' || $description == '') {
                         echo "<h2>You must enter a summary and a description</h2>";
                         newIdeaForm($uid, $summary, $description);
                         foot();
                         exit(1);
                 }
-                
+
                 $time = time();
-                
+
                 mysql_query('START TRANSACTION');
-                
+
                 $sql = sprintf("INSERT INTO puzzle_idea (title, summary, description) VALUES ('%s', '%s', '%s')",
                                 mysql_real_escape_string($title),
-                                mysql_real_escape_string($cleanSummary), 
+                                mysql_real_escape_string($cleanSummary),
                                 mysql_real_escape_string($cleanDescription));
                 query_db($sql);
-                
+
                 $sql = sprintf("SELECT id FROM puzzle_idea WHERE summary='%s' AND description='%s'",
-                                mysql_real_escape_string($cleanSummary), mysql_real_escape_string($cleanDescription)); 
+                                mysql_real_escape_string($cleanSummary), mysql_real_escape_string($cleanDescription));
                 $id = get_element($sql);
-                        
+
                 $sql = sprintf("INSERT INTO authors (pid, uid) VALUES ('%s', '%s')",
                                 mysql_real_escape_string($id),
                                 mysql_real_escape_string($uid));
                 query_db($sql);
-                
+
                 foreach ($coauthors as $author) {
                         if ($author != $uid) {
                                 $sql = sprintf("INSERT INTO authors (pid, uid) VALUES ('%s', '%s')",
@@ -57,7 +57,7 @@
                                 query_db($sql);
                         }
                 }
-                
+
                 mysql_query('COMMIT');
 
                 // Subscribe authors to comments on their own puzzles
@@ -67,7 +67,7 @@
                                 subscribe($auth, $id);
                         }
                 }
-                
+
                 echo "<h3>Idea Submitted</h3>";
         } else {
                 newIdeaForm($uid);
@@ -99,5 +99,5 @@
                         </p>
                 </form>
 <?php
-        }        
+        }
 ?>

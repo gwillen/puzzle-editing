@@ -7,7 +7,7 @@
 
         // Redirect to the login page, if not logged in
         isLoggedIn();
-        
+
         // Start HTML
         head("home");
 
@@ -19,7 +19,7 @@
         $mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
 
         echo "<h2>All Updates:</h2>\n";
-                
+
         // Display index page
         // Put messages to the team here (separate for blind and non-blind solvers?)
 ?>

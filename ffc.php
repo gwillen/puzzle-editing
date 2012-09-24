@@ -6,15 +6,15 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("ffc");
-        
+
         $puzzles = getPuzzlesInFinalFactChecking();
         displayQueue($uid, $puzzles, TRUE, FALSE, FALSE, FALSE, FALSE);
 
-        
+
         // End HTML
         foot();
 ?>
-        
+

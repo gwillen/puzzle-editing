@@ -6,10 +6,10 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-                        
+
         // Start HTML
         head("answers");
-                
+
         // Check for answers permissions
         if (!isEditor($uid) && !isLurker($uid)) {
                 echo "You do not have permission for this page.";
@@ -18,7 +18,7 @@
         }
 
         displayAnswers($uid);
-        
+
         // End HTML
         foot();
 
@@ -27,16 +27,16 @@
         function displayAnswers($uid)
         {
                 $rounds = getRounds();
-?>        
+?>
                 <table>
-<?php 
+<?php
                 foreach($rounds as $round) {
                     $answers = getAnswersForRound($round['rid']);
 ?>
                     <tr>
                             <td colspan="4"><b><?php echo "{$round['name']}: {$round['answer']}"; ?></b></td>
                     </tr>
-<?php 
+<?php
                     foreach($answers as $answer) {
                         $pid = $answer['pid'];
 ?>
@@ -52,7 +52,7 @@
 ?>
                 </table>
 
-<?php 
+<?php
         }
 ?>
 

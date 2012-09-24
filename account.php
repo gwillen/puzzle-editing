@@ -6,10 +6,10 @@
 
         // Redirect to the login page, if not logged in
         $uid = isLoggedIn();
-        
+
         // Start HTML
         head("account");
-        
+
         $passwd = '';
         if (isset($_POST['changepwd'])) {
                 $passwd = change_password($_POST['uid'], $_POST['oldpass'],
@@ -27,13 +27,13 @@
         } else if ($passwd == 'error') {
                 echo '<strong>An Error Occurred While Changing Password</strong>';
         }
-        
+
         printPerson(getPerson($uid));
 ?>
         <p><a href="<?php echo URL ?>/register.php">Edit your information</a></p>
-        
+
         <br />
-        
+
         <script type="text/javascript">
                 //<![CDATA[
                         function validate(f) {
@@ -78,7 +78,7 @@
                 </tr>
         </table>
         </form>
-<?php        
+<?php
         // End HTML
         foot();
 ?>
