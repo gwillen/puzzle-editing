@@ -1608,6 +1608,12 @@ function getLastCommentDate($pid)
         return get_element_null($sql);
 }
 
+function getLastTestReportDate($pid)
+{
+        $sql = sprintf("SELECT MAX(time) FROM testing_feedback WHERE pid='%s'", mysql_real_escape_string($pid));
+        return get_element_null($sql);
+}
+
 function getNumEditors($pid)
 {
         $sql = sprintf("SELECT puzzle_idea.id, COUNT(editor_queue.uid) FROM puzzle_idea

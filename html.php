@@ -158,6 +158,7 @@
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Authors</th>';} ?>
                                 <?php if ($showAuthorsAndEditors) {echo '<th class="puzzidea">Editors</th>';} ?>
                                 <?php if ($showTesters) {echo '<th class="puzzidea">Testers</th>';} ?>
+                                <?php if ($showTesters) {echo '<th class="puzzidea">Last Test Report</th>';} ?>
                         </tr>
                 </thead>
                 <tbody>
@@ -211,6 +212,7 @@
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getAuthorsAsList($pid) . "</td>";} ?>
                                 <?php if ($showAuthorsAndEditors) {echo "<td class='puzzidea'>" . getEditorsAsList($pid) . "</td>";} ?>
                                 <?php if ($showTesters) {echo "<td class='puzzidea'>" . getCurrentTestersAsList($pid) . "</td>";} ?>
+                                <?php if ($showTesters) {echo "<td class='puzzidea'>" .  getLastTestReportDate($pid) . "</td>";} ?>
                         </tr>
 <?php
                 }
