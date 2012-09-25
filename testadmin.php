@@ -20,7 +20,7 @@
 
         echo "<h1>Test Queue</h1>";
 
-        ?>
+?>
         <form action="form-submit.php" method="post">
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 Enter Puzzle ID to testadmin: <input type="text" name="pid" />
@@ -28,7 +28,7 @@
         </form>
 
         <br />
-        <?
+<?php
         $inTesting = count(getPuzzlesInTesting());
         $numNeedAdmin = count(getPuzzlesNeedTestAdmin());
 
