@@ -175,6 +175,17 @@
                 exit(0);
         }
 
+        if (isset($_POST['requestTestsolve'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+                $notes = $_POST['notes'];
+
+                requestTestsolve($uid, $pid, $notes);
+
+                header("Location: " . URL . "/puzzle?pid=" . $pid);
+                exit(0);
+        }
+
         if (isset($_POST['emailSub'])) {
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];

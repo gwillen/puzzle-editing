@@ -89,6 +89,11 @@
         displayNotes($uid, $pid);
         echo "</div>";
 
+        // List testsolve requests
+        echo "<div class='testsolveInfo'>";
+        displayTestsolveRequests($uid, $pid);
+        echo "</div>";
+
         // Show files
         echo "<div class='fileInfo'>";
         displayFiles($uid, $pid);
@@ -514,6 +519,46 @@ function displayStatus($uid, $pid)
                                         </tr>
                                 </form>
                                 </table>
+                        </td>
+                </tr>
+<?php
+        }
+?>
+        </table>
+<?php
+}
+
+function displayTestsolveRequests($uid, $pid)
+{
+        $reqs = getTestsolveRequestsForPuzzle($pid);
+
+?>
+        <table class="testsolveInfo">
+                <tr>
+                        <td class='testsolveInfo'>
+                                <strong>Active Testsolve Requests: </strong> <?php echo $reqs; ?>
+                        </td>
+                        <td class='testsolveInfo'>
+                                <?php
+                                if (canRequestTestsolve($uid, $pid))
+                                {
+                                        ?><a href="#" class="changeLink">[Request]</a><?php
+                                } ?>
+                        </td>
+                </tr>
+<?php
+        if (canRequestTestsolve($uid, $pid))
+        {
+?>
+                <tr>
+                        <td colspan='3'>
+                        <form method="post" action="form-submit.php">
+                                <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                <p><strong>Request Testsolve:</strong></p>
+                                <textarea name="notes">[Enter any notes here]</textarea>
+                                <input type="submit" name="requestTestsolve" value="Request Testsolve">
+                        </form>
                         </td>
                 </tr>
 <?php

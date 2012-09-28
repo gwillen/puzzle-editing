@@ -129,7 +129,12 @@ function isServerAdmin($uid)
 
 function canChangeStatus($uid)
 {
-    return hasPriv($uid, 'changeStatus');
+        return hasPriv($uid, 'changeStatus');
+}
+
+function canRequestTestsolve($uid, $pid)
+{
+        return true;  // Sure, why not for now.
 }
 
 function hasPriv($uid, $priv)
@@ -472,7 +477,6 @@ function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes)
         addComment($uid, $pid, $comment, TRUE);
 }
 
-
 // Get the current answers (including answer id) for a puzzle
 // Return an assoc array of type [aid] => [answer]
 function getAnswersForPuzzle($pid)
@@ -631,6 +635,16 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
                 emailComment(FALSE, $pid, $cleanComment);
         else
                 emailComment($uid, $pid, $cleanComment);
+}
+
+function requestTestsolve($uid, $pid, $notes)
+{
+        $sql = sprintf("INSERT INTO testsolve_requests (pid, uid, notes) VALUES ('%s', '%s', '%s')",
+                       mysql_real_escape_string($pid),
+                       mysql_real_escape_string($uid),
+                       mysql_real_escape_string($notes));
+        query_db($sql);
+        addComment($uid, $pid, "Requested a testsolve (Notes: $notes)", TRUE);
 }
 
 function emailComment($uid, $pid, $cleanComment)
@@ -1261,6 +1275,13 @@ function getStatusNameForPuzzle($pid)
         $sql = sprintf("SELECT pstatus.name FROM pstatus, puzzle_idea
                                         WHERE puzzle_idea.id='%s' AND puzzle_idea.pstatus=pstatus.id",
                         mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
+function getTestsolveRequestsForPuzzle($pid)
+{
+        $sql = sprintf("SELECT count(*) FROM testsolve_requests where pid='%s' AND done=0",
+                       mysql_real_escape_string($pid));
         return get_element($sql);
 }
 
