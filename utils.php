@@ -1407,7 +1407,9 @@ function changeStatus($uid, $pid, $status)
         if ($inTesting_before == "0" && $inTesting_after == "1") {
                 // Status changed into testing; file an automatic testsolve
                 // request.
-                requestTestsolve($uid, $pid, "Automatic testsolve request.");
+                if (getTestsolveRequestsForPuzzle($pid) == 0) {
+                        requestTestsolve($uid, $pid, "Automatic testsolve request.");
+                }
         }
 }
 
