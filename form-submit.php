@@ -186,6 +186,26 @@
                 exit(0);
         }
 
+        if (isset($_POST['clearTestsolveRequests'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                clearTestsolveRequests($pid);
+
+                header("Location: " . URL . "/puzzle?pid=" . $pid);
+                exit(0);
+        }
+
+        if (isset($_POST['clearOneTestsolveRequest'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                clearOneTestsolveRequest($pid);
+
+                header("Location: " . URL . "/puzzle?pid=" . $pid);
+                exit(0);
+        }
+
         if (isset($_POST['emailSub'])) {
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
@@ -217,13 +237,13 @@
                 exit(0);
         }
 
-  if (isset($_POST['SelfAddFactchecker'])) {
-    // User wishes to opt in to factchecking duty.
-    $uid = $_POST['uid'];
-    grantFactcheckPowers($uid);
-                header("Location: " . URL . "/factcheck");
-                exit(0);
-  }
+        if (isset($_POST['SelfAddFactchecker'])) {
+          // User wishes to opt in to factchecking duty.
+          $uid = $_POST['uid'];
+          grantFactcheckPowers($uid);
+                      header("Location: " . URL . "/factcheck");
+                      exit(0);
+        }
 
         if (isset($_POST['FactcheckPuzzle'])) {
                 $uid = $_POST['uid'];

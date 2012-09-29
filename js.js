@@ -4,7 +4,7 @@ $(document).ready(function()
 	$('.changeLink').parent().parent().next().hide();	
 	$('.changeLink').click(function() {
 		$(this).parent().parent().next().toggle();
-		$(this).text($(this).text() == "[Change]" ? "[Hide]" : "[Change]");
+		$(this).text($(this).text() == "[Hide]" ? "[Change]" : "[Hide]");
 		return false;
 	})
 	

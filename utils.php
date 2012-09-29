@@ -134,7 +134,11 @@ function canChangeStatus($uid)
 
 function canRequestTestsolve($uid, $pid)
 {
-        return true;  // Sure, why not for now.
+        return isPuzzleInTesting($pid) &&
+                canViewPuzzle($uid, $pid);
+        // Should maybe be stricter than 'can view', but 'is editor on puzzle'
+        // is too strict because it excludes the testsolve admins / chief
+        // editors / chief producers / etc.
 }
 
 function hasPriv($uid, $priv)
@@ -645,6 +649,27 @@ function requestTestsolve($uid, $pid, $notes)
                        mysql_real_escape_string($notes));
         query_db($sql);
         addComment($uid, $pid, "Requested a testsolve (Notes: $notes)", TRUE);
+}
+
+function clearOneTestsolveRequest($pid)
+{
+        // Clears just the oldest testsolve request.
+        //
+        // This is just a touch horrifying. In particular, the 'select * from'
+        // is a workaround for a mysql limitation.
+        $sql = sprintf("update testsolve_requests set done=1 where pid='%d' and done=0 and
+                        timestamp=(select * from (select timestamp from testsolve_requests where
+                        pid='%d' and done=0 order by timestamp limit 1) as a)",
+                       mysql_real_escape_string($pid),
+                       mysql_real_escape_string($pid));
+        query_db($sql);
+}
+
+function clearTestsolveRequests($pid)
+{
+        $sql = sprintf("UPDATE testsolve_requests SET done=1 where pid='%d'",
+                       mysql_real_escape_string($pid));
+        query_db($sql);
 }
 
 function emailComment($uid, $pid, $cleanComment)
@@ -1377,6 +1402,12 @@ function changeStatus($uid, $pid, $status)
                 }
                 // Now, reset the number-of-testers count for the puzzle.
                 resetPuzzleTesterCount($pid);
+        }
+
+        if ($inTesting_before == "0" && $inTesting_after == "1") {
+                // Status changed into testing; file an automatic testsolve
+                // request.
+                requestTestsolve($uid, $pid, "Automatic testsolve request.");
         }
 }
 

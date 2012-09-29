@@ -543,7 +543,23 @@ function displayTestsolveRequests($uid, $pid)
                                 if (canRequestTestsolve($uid, $pid))
                                 {
                                         ?><a href="#" class="changeLink">[Request]</a><?php
+                                } else {
+                                        ?><i class="smallText">[Put in testing first]</i><?php
                                 } ?>
+                                <a href="#" onClick="document.getElementById('clearOneTestsolveRequest').submit(); return 0;"
+                                   class="smallText">[Clear one]</a>
+                                <a href="#" onClick="document.getElementById('clearTestsolveRequests').submit(); return 0;"
+                                   class="smallText">[Clear all]</a>
+                                <form id="clearOneTestsolveRequest" method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <input type="hidden" name="clearOneTestsolveRequest" />
+                                </form>
+                                <form id="clearTestsolveRequests" method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <input type="hidden" name="clearTestsolveRequests" />
+                                </form>
                         </td>
                 </tr>
 <?php
