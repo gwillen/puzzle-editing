@@ -1257,7 +1257,7 @@ function canSeeAllPuzzles($uid)
 
 function canSeeTesters($uid, $pid)
 {
-        return isTestingAdminOnPuzzle($uid, $pid) || !(isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid));
+        return isTestingAdminOnPuzzle($uid, $pid) || !isAuthorOnPuzzle($uid, $pid);
 }
 
 function canTestPuzzle($uid, $pid, $display = FALSE)
