@@ -710,8 +710,36 @@ function sendEmail($uid, $subject, $message, $link)
         $address = getEmail($uid);
         $msg = $message . "\n\n" . $link;
 
-        if (!DEVMODE)
-                mail($address, $subject, $msg);
+        $sql = sprintf("INSERT INTO email_outbox (address, subject, message)
+                                           VALUES('%s', '%s', '%s')",
+                                           mysql_real_escape_string($address),
+                                           mysql_real_escape_string($subject),
+                                           mysql_real_escape_string($msg));
+        query_db($sql);
+}
+
+function realSendAllEmail()
+{
+        mysql_query("START TRANSACTION");
+        $sql = ("SELECT * from email_outbox");
+        $mails = get_rows($sql);
+        $sql = ("DELETE from email_outbox");
+        query_db($sql);
+        mysql_query("COMMIT");
+
+        if (is_null($mails))
+        {
+                return;
+        }
+        foreach ($mails as $mail)
+        {
+                $address = $mail[1];
+                $subject = $mail[2];
+                $msg = $mail[3];
+                if (!DEVMODE)
+                        mail($address, $subject, $msg);
+                //print "$address - $subject<BR>\n";
+        }
 }
 
 
