@@ -243,6 +243,7 @@ function displayPeople($uid, $pid)
         <table>
         <?php displayAuthors($uid, $pid); ?>
         <?php displaySpoiled($uid, $pid); ?>
+        <?php displayRoundCaptain($uid, $pid); ?>
         <?php displayEditors($uid, $pid); ?>
         <?php displayFactcheckers($uid, $pid); ?>
         <?php if (canSeeTesters($uid, $pid)) {displayTesters($uid, $pid);} ?>
@@ -349,6 +350,45 @@ function displayAddSpoiledUsers($pid)
         $spoiled = getAvailableSpoiledUsersForPuzzle($pid);
         if ($spoiled != NULL)
                 makeOptionElements($spoiled, 'addSpoiledUser');
+}
+
+function displayRoundCaptain($uid, $pid)
+{
+?>
+                <tr>
+                        <td class='peopleInfo'>
+                                <strong>Round Captain:</strong> <?php echo getRoundCaptain($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td>
+                                <table>
+                                        <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <tr>
+                                                <td>
+                                                        <p><strong>Select Round Captain:</strong></p>
+                                                        <?php echo displaySelectRoundCaptain($pid); ?>
+                                                </td>
+                                        </tr>
+                                        <tr>
+                                                <td colspan="2">
+                                                        <input type="submit" name="changeRoundCaptain" value="Select Round Captain" />
+                                                </td>
+                                        </tr>
+                                        </form>
+                                </table>
+                        </td>
+                </tr>
+<?php
+}
+
+function displaySelectRoundCaptain($pid)
+{
+        $capts = getAvailableRoundCaptainsForPuzzle($pid);
+        if ($capts != NULL)
+                makeOptionElements($capts, 'selectRoundCaptain');
 }
 
 function displayEditors($uid, $pid)

@@ -126,6 +126,21 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeRoundCaptain'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                if (isset($_POST['selectRoundCaptain']))
+                        $rc = $_POST['selectRoundCaptain'];
+                else
+                        $rc = NULL;
+
+                setRoundCaptain($uid, $pid, $rc);
+
+                header("Location: " . URL . "/puzzle?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeStatus'])) {
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];

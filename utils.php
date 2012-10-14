@@ -102,6 +102,11 @@ function isEditor($uid)
         return hasPriv($uid, 'addToEditingQueue');
 }
 
+function isRoundCaptain($uid)
+{
+        return hasPriv($uid, 'addToRoundCaptainQueue');
+}
+
 function isTestingAdmin($uid)
 {
         return hasPriv($uid, 'seeTesters');
@@ -286,6 +291,11 @@ function getUserNamesAsList($table, $pid)
 function getAuthorsAsList($pid)
 {
         return getUserNamesAsList("authors", $pid);
+}
+
+function getRoundCaptain($pid)
+{
+        return getUserNamesAsList("round_captain_queue", $pid);
 }
 
 function getEditorsAsList($pid)
@@ -922,6 +932,26 @@ function getAvailableEditorsForPuzzle($pid)
         return $editors;
 }
 
+function getAvailableRoundCaptainsForPuzzle($pid)
+{
+        // Get all users
+        $sql = 'SELECT uid FROM user_info';
+        $users = get_elements_null($sql);
+
+        $capts = NULL;
+        if ($users != NULL) {
+                foreach ($users as $uid) {
+                        if (isRoundCaptain($uid, $pid)) {
+                                $capts[$uid] = getUserName($uid);
+                        }
+                }
+        }
+
+        // Sort by name
+        natcasesort($capts);
+        return $capts;
+}
+
 function addSpoiledUser($uid, $pid, $addUser)
 {
         if ($addUser == NULL)
@@ -1173,6 +1203,50 @@ function removeAuthors($uid, $pid, $remove)
         $comment .= ' as author';
         if (count($remove) > 1)
                 $comment .= "s";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function setRoundCaptain($uid, $pid, $add)
+{
+        if ($add == NULL)
+                return;
+
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify puzzle $pid.");
+
+        $name = getUserName($uid);
+
+        $comment = 'Selected ';
+        foreach ($add as $roundcaptain) {
+                // Check that this roundcaptain is available for this puzzle
+                if (!isRoundCaptain($roundcaptain)) {
+                        utilsError(getUserName($roundcaptain) . ' is not available.');
+                }
+
+                mysql_query("START TRANSACTION");
+                $sql = sprintf("DELETE FROM round_captain_queue WHERE pid='%s'",
+                                mysql_real_escape_string($pid));
+                query_db($sql);
+                $sql = sprintf("INSERT INTO round_captain_queue (uid, pid) VALUES ('%s', '%s')",
+                                mysql_real_escape_string($roundcaptain), mysql_real_escape_string($pid));
+                query_db($sql);
+                mysql_query("COMMIT");
+
+                $comment .= getUserName($roundcaptain);
+
+                // Email new roundcaptain
+                $transformer = puzzleTransformer($pid);
+                $subject = "Round Captain on $transformer (puzzle $pid)";
+                $message = "$name selected you as round captain on $transformer (puzzle $pid).";
+                $link = URL . "/puzzle?pid=$pid";
+                sendEmail($roundcaptain, $subject, $message, $link);
+
+                // Subscribe roundcaptains to comments on their puzzles
+                subscribe($roundcaptain, $pid);
+        }
+
+        $comment .= ' as round captain';
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -1721,6 +1795,15 @@ function getNumTesters($pid)
 function getPuzzlesInEditorQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM editor_queue WHERE uid='%s'",
+                        mysql_real_escape_string($uid));
+        $puzzles = get_elements_null($sql);
+
+        return sortByLastCommentDate($puzzles);
+}
+
+function getPuzzlesInRoundCaptainQueue($uid)
+{
+        $sql = sprintf("SELECT pid FROM round_captain_queue WHERE uid='%s'",
                         mysql_real_escape_string($uid));
         $puzzles = get_elements_null($sql);
 

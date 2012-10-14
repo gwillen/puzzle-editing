@@ -53,6 +53,7 @@
                         <?php if(isset($_SESSION['uid']) && canChangeStatus($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editorlist") ?  "selnav" : "nav" ?>" href="editorlist">Editor List</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "author") ? "selnav" : "nav" ?>" href="author">Author</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid']) && isEditor($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "editor") ? "selnav" : "nav" ?>" href="editor">Editor</a></li> <?php } ?>
+                        <?php if(isset($_SESSION['uid']) && isRoundCaptain($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "roundcaptain") ? "selnav" : "nav" ?>" href="roundcaptain">Round Captain</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "spoiled") ? "selnav" : "nav" ?>" href="spoiled">Spoiled</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck">Fact Check</a></li> <?php } ?>
             <?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "ffc") ? "selnav" : "nav" ?>" href="ffc">Final Fact Check</a></li> <?php } ?>
