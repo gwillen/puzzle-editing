@@ -101,6 +101,10 @@
                         $addUser = NULL;
 
                 changeSpoiled($uid, $pid, $removeUser, $addUser);
+                if ($removeUser[0] == $uid) {
+                        echo "Removed you as spoiled. Not redirecting to avoid re-spoiling you.\n";
+                        exit(0);
+                }
 
                 header("Location: " . URL . "/puzzle?pid=$pid");
                 exit(0);
