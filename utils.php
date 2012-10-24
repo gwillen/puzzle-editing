@@ -162,6 +162,13 @@ function isAuthorOnPuzzle($uid, $pid)
         return has_result($sql);
 }
 
+function isRoundCaptainOnPuzzle($uid, $pid)
+{
+        $sql = sprintf("SELECT * FROM round_captain_queue WHERE uid='%s' AND pid='%s'",
+                        mysql_real_escape_string($uid), mysql_real_escape_string($pid));
+        return has_result($sql);
+}
+
 function isEditorOnPuzzle($uid, $pid)
 {
         $sql = sprintf("SELECT * FROM editor_queue WHERE uid='%s' AND pid='%s'",
@@ -261,6 +268,11 @@ function getAuthorsForPuzzle($pid)
         return getUsersForPuzzle("authors", $pid);
 }
 
+function getRoundCaptainsForPuzzle($pid)
+{
+        return getUsersForPuzzle("round_captain_queue", $pid);
+}
+
 function getEditorsForPuzzle($pid)
 {
         return getUsersForPuzzle("editor_queue", $pid);
@@ -293,7 +305,7 @@ function getAuthorsAsList($pid)
         return getUserNamesAsList("authors", $pid);
 }
 
-function getRoundCaptain($pid)
+function getRoundCaptainsAsList($pid)
 {
         return getUserNamesAsList("round_captain_queue", $pid);
 }
@@ -941,7 +953,7 @@ function getAvailableRoundCaptainsForPuzzle($pid)
         $capts = NULL;
         if ($users != NULL) {
                 foreach ($users as $uid) {
-                        if (isRoundCaptain($uid, $pid)) {
+                        if (isRoundCaptainAvailable($uid, $pid)) {
                                 $capts[$uid] = getUserName($uid);
                         }
                 }
@@ -1000,6 +1012,11 @@ function addSpoiledUserQuietly($uid, $pid)
         }
 }
 
+function isRoundCaptainAvailable($uid, $pid)
+{
+        return (isRoundCaptain($uid) && !isRoundCaptainOnPuzzle($uid, $pid));
+}
+
 function isEditorAvailable($uid, $pid)
 {
         return (isEditor($uid) &&
@@ -1015,6 +1032,15 @@ function changeAuthors($uid, $pid, $add, $remove)
         mysql_query('START TRANSACTION');
         addAuthors($uid, $pid, $add);
         removeAuthors($uid, $pid, $remove);
+        mysql_query('COMMIT');
+}
+
+// Add and remove round captains
+function changeRoundCaptains($uid, $pid, $add, $remove)
+{
+        mysql_query('START TRANSACTION');
+        addRoundCaptains($uid, $pid, $add);
+        removeRoundCaptains($uid, $pid, $remove);
         mysql_query('COMMIT');
 }
 
@@ -1207,7 +1233,7 @@ function removeAuthors($uid, $pid, $remove)
         addComment($uid, $pid, $comment, TRUE);
 }
 
-function setRoundCaptain($uid, $pid, $add)
+function addRoundCaptains($uid, $pid, $add)
 {
         if ($add == NULL)
                 return;
@@ -1217,36 +1243,78 @@ function setRoundCaptain($uid, $pid, $add)
 
         $name = getUserName($uid);
 
-        $comment = 'Selected ';
+        $comment = 'Added ';
         foreach ($add as $roundcaptain) {
-                // Check that this roundcaptain is available for this puzzle
-                if (!isRoundCaptain($roundcaptain)) {
+                // Check that this round captain is available for this puzzle
+                if (!isRoundCaptainAvailable($roundcaptain, $pid)) {
                         utilsError(getUserName($roundcaptain) . ' is not available.');
                 }
 
-                mysql_query("START TRANSACTION");
-                $sql = sprintf("DELETE FROM round_captain_queue WHERE pid='%s'",
-                                mysql_real_escape_string($pid));
-                query_db($sql);
+                // Add round captain to puzzle
                 $sql = sprintf("INSERT INTO round_captain_queue (uid, pid) VALUES ('%s', '%s')",
                                 mysql_real_escape_string($roundcaptain), mysql_real_escape_string($pid));
                 query_db($sql);
-                mysql_query("COMMIT");
 
+                // Add to comment
+                if ($comment != 'Added ')
+                        $comment .= ', ';
                 $comment .= getUserName($roundcaptain);
 
-                // Email new roundcaptain
+                // Email new round captain
                 $transformer = puzzleTransformer($pid);
                 $subject = "Round Captain on $transformer (puzzle $pid)";
-                $message = "$name selected you as round captain on $transformer (puzzle $pid).";
+                $message = "$name added you as a round captain to $transformer (puzzle $pid).";
                 $link = URL . "/puzzle?pid=$pid";
                 sendEmail($roundcaptain, $subject, $message, $link);
 
-                // Subscribe roundcaptains to comments on their puzzles
+                // Subscribe round captains to comments on their puzzles
                 subscribe($roundcaptain, $pid);
         }
 
         $comment .= ' as round captain';
+        if (count($add) > 1)
+                $comment .= "s";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function removeRoundCaptains($uid, $pid, $remove)
+{
+        if ($remove == NULL)
+                return;
+
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify puzzle $pid.");
+
+        $name = getUserName($uid);
+
+        $comment = 'Removed ';
+        foreach ($remove as $roundcaptain) {
+                // Check that this round captain is assigned to this puzzle
+                if (!isRoundCaptainOnPuzzle($roundcaptain, $pid))
+                        utilsError(getUserName($roundcaptain) . " is not a round captain on puzzle $pid");
+
+                // Remove round captain from puzzle
+                $sql = sprintf("DELETE FROM round_captain_queue WHERE uid='%s' AND pid='%s'",
+                                mysql_real_escape_string($roundcaptain), mysql_real_escape_string($pid));
+                query_db($sql);
+
+                // Add to comment
+                if ($comment != 'Removed ')
+                        $comment .= ', ';
+                $comment .= getUserName($roundcaptain);
+
+                // Email old round captain
+                $transformer = puzzleTransformer($pid);
+                $subject = "Round Captain on $transformer (puzzle $pid)";
+                $message = "$name removed you as a round captain on $transformer (puzzle $pid).";
+                $link = URL . "/roundcaptain";
+                sendEmail($roundcaptain, $subject, $message, $link);
+        }
+
+        $comment .= ' as round captain';
+        if (count($remove) > 1)
+                $comment .= "s";
 
         addComment($uid, $pid, $comment, TRUE);
 }

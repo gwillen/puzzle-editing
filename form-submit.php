@@ -130,12 +130,17 @@
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
 
-                if (isset($_POST['selectRoundCaptain']))
-                        $rc = $_POST['selectRoundCaptain'];
+                if (isset($_POST['addRoundCaptain']))
+                        $add = $_POST['addRoundCaptain'];
                 else
-                        $rc = NULL;
+                        $add = NULL;
 
-                setRoundCaptain($uid, $pid, $rc);
+                if (isset($_POST['removeRoundCaptain']))
+                        $remove = $_POST['removeRoundCaptain'];
+                else
+                        $remove = NULL;
+
+                changeRoundCaptains($uid, $pid, $add, $remove);
 
                 header("Location: " . URL . "/puzzle?pid=$pid");
                 exit(0);

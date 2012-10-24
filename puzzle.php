@@ -357,7 +357,7 @@ function displayRoundCaptain($uid, $pid)
 ?>
                 <tr>
                         <td class='peopleInfo'>
-                                <strong>Round Captain:</strong> <?php echo getRoundCaptain($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
+                                <strong>Round Captain:</strong> <?php echo getRoundCaptainsAsList($pid); ?>&nbsp;&nbsp;<a href="#" class="changeLink">[Change]</a>
                         </td>
                 </tr>
                 <tr>
@@ -368,8 +368,12 @@ function displayRoundCaptain($uid, $pid)
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                                         <tr>
                                                 <td>
-                                                        <p><strong>Select Round Captain:</strong></p>
-                                                        <?php echo displaySelectRoundCaptain($pid); ?>
+                                                        <p><strong>Remove Round Captain(s):</strong></p>
+                                                        <?php echo displayRemoveRoundCaptain($pid); ?>
+                                                </td>
+                                                <td>
+                                                        <p><strong>Add Round Captain(s):</strong></p>
+                                                        <?php echo displayAddRoundCaptain($pid); ?>
                                                 </td>
                                         </tr>
                                         <tr>
@@ -384,11 +388,18 @@ function displayRoundCaptain($uid, $pid)
 <?php
 }
 
-function displaySelectRoundCaptain($pid)
+function displayRemoveRoundCaptain($pid)
+{
+        $capts = getRoundCaptainsForPuzzle($pid);
+        if ($capts != NULL)
+                makeOptionElements($capts, 'removeRoundCaptain');
+}
+
+function displayAddRoundCaptain($pid)
 {
         $capts = getAvailableRoundCaptainsForPuzzle($pid);
         if ($capts != NULL)
-                makeOptionElements($capts, 'selectRoundCaptain');
+                makeOptionElements($capts, 'addRoundCaptain');
 }
 
 function displayEditors($uid, $pid)
