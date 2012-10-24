@@ -759,8 +759,11 @@ function realSendAllEmail()
                 $subject = $mail[2];
                 $msg = $mail[3];
                 if (!DEVMODE)
+                {
                         mail($address, $subject, $msg);
-                //print "$address - $subject<BR>\n";
+                } else {
+                        print "$address - $subject<BR>\n";
+                }
         }
 }
 
