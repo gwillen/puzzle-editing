@@ -101,7 +101,9 @@
                         $addUser = NULL;
 
                 changeSpoiled($uid, $pid, $removeUser, $addUser);
-                if ($removeUser[0] == $uid) {
+                if ($removeUser[0] == $uid)
+                {
+                        head();
                         echo "Removed you as spoiled. Not redirecting to avoid re-spoiling you.\n";
                         exit(0);
                 }

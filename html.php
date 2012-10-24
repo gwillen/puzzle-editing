@@ -169,19 +169,19 @@
                 foreach ($puzzles as $pid) {
                         $puzzleInfo = getPuzzleInfo($pid);
 
-      // This is totally the wrong way to do this. The right way involves
-      // writing SQL.
-      if ($filter) {
-        if ($filter[0] == "status" && $filter[1] != $puzzleInfo["pstatus"]) {
-          continue;
-        }
-        if ($filter[0] == "author" && !isAuthorOnPuzzle($filter[1], $pid)) {
-          continue;
-        }
-        if ($filter[0] == "editor" && !isEditorOnPuzzle($filter[1], $pid)) {
-          continue;
-        }
-      }
+                        // This is totally the wrong way to do this. The right way involves
+                        // writing SQL.
+                        if ($filter) {
+                                if ($filter[0] == "status" && $filter[1] != $puzzleInfo["pstatus"]) {
+                                  continue;
+                                }
+                                if ($filter[0] == "author" && !isAuthorOnPuzzle($filter[1], $pid)) {
+                                  continue;
+                                }
+                                if ($filter[0] == "editor" && !isEditorOnPuzzle($filter[1], $pid)) {
+                                  continue;
+                                }
+                        }
 
                         $title = $puzzleInfo["title"];
                         if ($title == NULL)
