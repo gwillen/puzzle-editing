@@ -21,9 +21,13 @@
 
         // Check permissions
         if (!isTesterOnPuzzle($uid, $pid) && !isFormerTesterOnPuzzle($uid, $pid)) {
-                echo "You do not have permission to test this puzzle.";
-                foot();
-                exit(1);
+                if (!canTestPuzzle($uid, $pid)) {
+                        echo "You do not have permission to test this puzzle.";
+                        foot();
+                        exit(1);
+                } else {
+                        addPuzzleToTestQueue($uid, $pid);
+                }
         }
 
         $title = getTitle($pid);
@@ -31,6 +35,12 @@
                 $title = '(untitled)';
 
         echo "<h1>Puzzle $pid -- $title</h1>";
+        echo "<b><font color='red'>IMPORTANT:</font> Please leave feedback! We
+        need it!</b><br><br> When you are done, PLEASE leave feedback indicating
+        that you do not intend to return, <b>even if the rest is blank</b>. This
+        removes you as a tester on this puzzle, so we can track who's still
+        working.\n";
+        echo "<br><br>\n";
 
         if (isset($_SESSION['feedback'])) {
                 echo '<p><strong>' . $_SESSION['feedback'] . '</strong></p>';
@@ -145,6 +155,9 @@ function displayFeedbackForm($uid, $pid)
                         Do you intend to return to this puzzle?
                         <input type="radio" name="done" value="yes" /> Yes
                         <input type="radio" name="done" value="no" /> No
+                        <br><small>(Selecting "No" marks you as finished
+                        in the database. This is important for
+                        our records.)</small>
                         </td>
                 </tr>
                 <tr>
