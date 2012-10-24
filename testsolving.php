@@ -28,7 +28,41 @@
 
         <br />
 
-        <h3>In Queue</h3>
+        <h2>Available for you to test (In order of priority):</small></h2>
+        <b><font color="red">IMPORTANT:</font> Clicking a puzzle below will
+        spoil you on it. Please click judiciously.</b>
+        <br>
+        <small>Tip: If you are joining an existing testsolve group, you can enter the puzzle number above, even if you don't see it here.</small>
+        <br>
+<?php
+
+        $availPuzzles = getAvailablePuzzlesToTestForUser($uid);
+        if ($availPuzzles != NULL)
+        {
+                // Sort descending, by MINUS priority, then reverse.
+                // Trust me on this.
+                //
+                // (We want to sort by priority descending, then by puzzle ID
+                // ascending. This is the easiest way to (sort of mostly)
+                // accomplish that.  "Mostly" because PHP's asort is not
+                // stable, so this method of using a secondary sort key doesn't
+                // quite work.)
+                foreach ($availPuzzles as $pid)
+                {
+                        $sort[$pid] = -getPuzzleTestPriority($pid);
+                }
+                asort($sort);
+                $availPuzzles = array_keys($sort);
+                $availPuzzles = array_reverse($availPuzzles);
+        }
+        displayQueue($uid, $availPuzzles, TRUE, FALSE, FALSE, TRUE, FALSE);
+
+?>
+        <br/>
+        <br/>
+        <hr/>
+        <br/>
+        <h3>Currently Testing -- (if you're done, please submit a report, even an empty one):</h3>
 <?php
 
   /* Commented out to disallow -- for now -- getting a random puzzle to test.
@@ -45,14 +79,16 @@
   */
 
         $testPuzzles = getActivePuzzlesInTestQueue($uid);
-        displayQueue($uid, $testPuzzles, FALSE, FALSE, FALSE, TRUE, FALSE);
+        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, TRUE, FALSE);
 
+        echo '<br />';
         echo '<br />';
 
         echo '<h3>Finished Testing</h3>';
         $donePuzzles = getActiveDoneTestingPuzzlesForUser($uid);
-        displayQueue($uid, $donePuzzles, FALSE, FALSE, FALSE, TRUE, FALSE);
+        displayQueue($uid, $donePuzzles, TRUE, FALSE, FALSE, TRUE, FALSE);
 
+        echo '<br />';
         echo '<br />';
 
         echo '<h3>Puzzles Not Currently In Testing</h3>';

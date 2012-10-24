@@ -2050,6 +2050,28 @@ function addPuzzleToTestQueue($uid, $pid)
         incrementPuzzleTesterCount($pid);
 }
 
+// Lower numbers are HIGHER priorities.
+function getPuzzleTestPriority($pid)
+{
+        $status = getStatusForPuzzle($pid);
+        $numTesters = getNumTesters($pid);
+
+        // XXX: These statuses are bogus and don't exist in the new
+        // world. If this function is to be used, this ought to be
+        // fixed.
+        /*
+        if ($status == 4)
+                $num = $numTesters * 2;
+        else if ($status == 7)
+                $num = $numTesters * 3;
+        else
+                $num = $numTesters;
+        */
+        $num = $numTesters;
+        return $num;
+        // Lower numbers are HIGHER priorities.
+}
+
 function getPuzzleToTest($uid)
 {
         $puzzles = getAvailablePuzzlesToTestForUser($uid);
@@ -2058,16 +2080,8 @@ function getPuzzleToTest($uid)
 
         $sort = NULL;
         foreach ($puzzles as $pid) {
-                $status = getStatusForPuzzle($pid);
-                $numTesters = getNumTesters($pid);
-
-                if ($status == 4)
-                        $num = $numTesters * 2;
-                else if ($status == 7)
-                        $num = $numTesters * 3;
-                else
-                        $num = $numTesters;
-
+                $num = getPuzzleTestPriority($pid);
+                // Lower numbers are HIGHER priorities
                 $sort[$pid] = $num;
         }
 
@@ -2131,6 +2145,7 @@ function getAvailablePuzzlesToTestForUser($uid)
                 return NULL;
 
         $available = NULL;
+        echo "\n<br>\n";
         foreach ($puzzles as $pid) {
                 if (canTestPuzzle($uid, $pid) &&
                     !isInTargetedTestsolving($pid) &&
@@ -2149,7 +2164,7 @@ function isInTargetedTestsolving($pid)
         $sql = sprintf("SELECT pstatus FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
         $status = get_element($sql);
 
-        return ($status == 5);
+        return ($status == 4 || $status == 12 || $status == 18);
 }
 
 function isPuzzleInAddToTestAdminQueue($pid)
