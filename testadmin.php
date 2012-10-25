@@ -121,6 +121,9 @@ function displayTestingSummary()
                 $name = getUserName($uid);
 
                 $arr[$uid] = "<tr><td class='name'>$name</td><td>";
+                if (!isset($currqueue[$uid])) {
+                        $currqueue[$uid] = "";
+                }
                 $arr[$uid] .= '<span class="current">Current queue: ' . print_r($currqueue[$uid], true) . '</span><br />';
                 $arr[$uid] .= '<span class="past">Past comments: </span><br />';
                 $arr[$uid] .= "<span class='a$uid-$pid'>";
