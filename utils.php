@@ -11,6 +11,7 @@ function isLoggedIn()
                 $_SESSION['time'] = time();
                 return $_SESSION['uid'];
         } else {
+                $_SESSION['redirect_to'] = $_SERVER['REQUEST_URI'];
                 header("Location: " . URL . "/login.php");
                 exit(0);
         }
@@ -2542,6 +2543,13 @@ function grantFactcheckPowers($uid)
 {
   $sql = sprintf("INSERT INTO jobs (uid, jid) VALUES (%d, (select jid from priv where name = 'Fact Checker'))", $uid);
   query_db($sql);
+}
+
+function computeTestsolverScores()
+{
+        $in_testing = get_elements_null("SELECT uid, pid FROM test_queue");
+        $done_testing = get_elements_null("SELECT uid, pid FROM doneTesting");
+
 }
 
 function utilsError($msg)

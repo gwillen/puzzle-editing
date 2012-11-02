@@ -66,6 +66,11 @@
                 $r = mysql_fetch_assoc($result);
                 $_SESSION['uid'] = $r['uid'];
 
-                header("Location: " . URL . "/");
+                if(isset($_SESSION['redirect_to'])) {
+                        header("Location: " . $_SESSION['redirect_to']);
+                        unset($_SESSION['redirect_to']);
+                } else {
+                        header("Location: " . URL . "/");
+                }
         }
 ?>
