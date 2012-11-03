@@ -155,7 +155,7 @@ function checkAnsForm($uid, $pid)
 {
 ?>
         <form method="post" action="form-submit.php">
-                Check an answer:
+                Check an answer: (NOTE: If the title says "ANSWER NOT IN PUZZLETRON", this won't work and will always reject your answer.)
                 <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                 <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
                 <input type="input" name="ans" />
