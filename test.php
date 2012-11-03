@@ -143,8 +143,20 @@ function displayFeedbackForm($uid, $pid)
 {
 ?>
         <h2>Feedback Form</h2>
+<?php
+        if(ANON_TESTERS) {
+?>
         <p>Your name will be visible to testing admins and the board,
         but not to other puzzle editors or authors.</p>
+<?php
+        } else {
+?>
+        <p>Your name will be attached to your feedback. If you wish to leave
+        anonymous feedback, contact a testsolving director.
+        </p>
+<?php
+        }
+?>
 
         <form method="post" action="form-submit.php">
         <input type="hidden" name="uid" value="<?php echo $uid; ?>" />

@@ -659,7 +659,7 @@ function addComment($uid, $pid, $comment, $server = FALSE, $testing = FALSE)
         query_db($sql);
 
         if ($typeName == "Testsolver")
-                emailComment(FALSE, $pid, $cleanComment);
+                emailComment($uid, $pid, $cleanComment, TRUE);
         else
                 emailComment($uid, $pid, $cleanComment);
 }
@@ -695,9 +695,9 @@ function clearTestsolveRequests($pid)
         query_db($sql);
 }
 
-function emailComment($uid, $pid, $cleanComment)
+function emailComment($uid, $pid, $cleanComment, $isTestsolver = FALSE)
 {
-        if ($uid == FALSE)
+        if ($isTestsolver && ANON_TESTERS)
                 $name = "Anonymous Testsolver";
         else
                 $name = getUserName($uid);
@@ -1431,7 +1431,7 @@ function canSeeAllPuzzles($uid)
 
 function canSeeTesters($uid, $pid)
 {
-        return isTestingAdminOnPuzzle($uid, $pid) || !isAuthorOnPuzzle($uid, $pid);
+        return !ANON_TESTERS || isTestingAdminOnPuzzle($uid, $pid) || !isAuthorOnPuzzle($uid, $pid);
 }
 
 function canTestPuzzle($uid, $pid, $display = FALSE)

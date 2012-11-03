@@ -7,6 +7,7 @@
 
         session_start();
         define("DEVMODE", FALSE);
+        define("ANON_TESTERS", FALSE);
         define("URL", "http://z.manicsages.org/puzzle");
 
         // $dev = preg_match("/\/(.*)\/writing.*/", $_SERVER["SCRIPT_NAME"], $matches);
