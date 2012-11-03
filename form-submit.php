@@ -275,8 +275,7 @@
                 $uid = $_POST['uid'];
                 $pid = $_POST['pid'];
 
-                if (!addToFactcheckQueue($uid, $pid))
-                        $_SESSION['failedToAdd'] = TRUE;
+                addFactcheckers($uid, $pid, array($uid));
 
                 header("Location: " . URL . "/factcheck");
                 exit(0);

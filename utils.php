@@ -2045,6 +2045,9 @@ function addPuzzleToTestQueue($uid, $pid)
         $sql = sprintf("INSERT INTO test_queue (uid, pid) VALUES ('%s', '%s')",
                         mysql_real_escape_string($uid), mysql_real_escape_string($pid));
         query_db($sql);
+
+        $comment = "Added testsolver";
+        addComment($uid, $pid, $comment, FALSE, TRUE);
         mysql_query('COMMIT');
 
         // For keeping track of how many testers have this puzzle open.
