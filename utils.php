@@ -286,9 +286,24 @@ function getSpoiledUsersForPuzzle($pid)
 
 function getFactcheckersForPuzzle($pid)
 {
-  return getUsersForPuzzle("factcheck_queue", $pid);
+        return getUsersForPuzzle("factcheck_queue", $pid);
 }
 
+
+function getTestAdminsToNotify($pid)
+{
+        $table = 'testAdminQueue';
+        $sql = sprintf("SELECT user_info.uid FROM user_info INNER JOIN %s ON user_info.uid=%s.uid WHERE %s.pid='%s'",
+                                        $table, $table, $table, mysql_real_escape_string($pid));
+        $testadmins_for_puzzle = get_elements_null($sql);
+
+        $sql = "select user_info.uid from user_info, jobs where user_info.uid=jobs.uid and (jobs.jid=6 or jobs.jid=13);";
+        $all_testadmins = get_elements_null($sql);
+
+        // If a puzzle has testadmins, they will be auto-subscribed to
+        // comments. Prevent them from getting notified twice.
+        return ($testadmins_for_puzzle == NULL ? $all_testadmins : array());
+}
 
 // Get comma-separated list of users' names
 function getUserNamesAsList($table, $pid)
@@ -695,9 +710,9 @@ function clearTestsolveRequests($pid)
         query_db($sql);
 }
 
-function emailComment($uid, $pid, $cleanComment, $isTestsolver = FALSE)
+function emailComment($uid, $pid, $cleanComment, $isTestsolveComment = FALSE)
 {
-        if ($isTestsolver && ANON_TESTERS)
+        if ($isTestsolveComment && ANON_TESTERS)
                 $name = "Anonymous Testsolver";
         else
                 $name = getUserName($uid);
@@ -709,13 +724,29 @@ function emailComment($uid, $pid, $cleanComment, $isTestsolver = FALSE)
         $link = URL . "/puzzle?pid=$pid";
 
         $users = getSubbed($pid);
+        $admins = array();
+        if ($isTestsolveComment) {
+                $admins = getTestAdminsToNotify($pid);
+        }
         if ($users == NULL)
-                return;
+                $users = array();
+        if ($admins == NULL)
+                $admins = array();
 
         foreach ($users as $user)
         {
                 if ($user != $uid) {
                         sendEmail($user, $subject, $message, $link);
+                }
+        }
+        foreach ($admins as $user)
+        {
+                // NB: If a puzzle has no testadmin assigned, all testing
+                // directors get mail. If one of them is also an
+                // author/editor/etc., they will get mail twice. This is
+                // arguably not great, but we'll live with it.
+                if ($user != $uid) {
+                        sendEmail($user, "[Testsolve] $subject", $message, $link);
                 }
         }
 }
