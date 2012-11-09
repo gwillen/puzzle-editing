@@ -57,7 +57,7 @@
         // The last argument is 'show tester identities'? It should be FALSE,
         // but we've gotten lazy about using the testadmin system, which means
         // I need to see testers for puzzles that have no testadmin.
-        displayQueue($uid, $testPuzzles, FALSE, FALSE, FALSE, FALSE, TRUE);
+        displayQueue($uid, $testPuzzles, TRUE, FALSE, FALSE, FALSE, TRUE);
 
         echo "<h1>Testing Summary</h1>";
         displayTestingSummary();
