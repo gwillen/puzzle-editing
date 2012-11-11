@@ -512,9 +512,20 @@ function updateNotes($uid = 0, $pid, $oldNotes, $cleanNotes)
 {
         $sql = sprintf("UPDATE puzzle_idea SET notes='%s' WHERE id='%s'",
                         mysql_real_escape_string($cleanNotes), mysql_real_escape_string($pid));
-                        query_db($sql);
+        query_db($sql);
 
         $comment = "Changed status notes from \"$oldNotes\" to \"$cleanNotes\"";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function updateWikiPage($uid = 0, $pid, $oldWikiPage, $cleanWikiPage)
+{
+        $sql = sprintf("UPDATE puzzle_idea SET wikipage ='%s' WHERE id='%s'",
+                        mysql_real_escape_string($cleanWikiPage), mysql_real_escape_string($pid));
+        query_db($sql);
+
+        $comment = "Changed testsolve wiki page from \"$oldWikiPage\" to \"$cleanWikiPage\"";
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -1640,6 +1651,22 @@ function changeNotes($uid, $pid, $notes)
         mysql_query('COMMIT');
 }
 
+function changeWikiPage($uid, $pid, $wikiPage)
+{
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify this puzzle.");
+
+        $purifier = new HTMLPurifier();
+        mysql_query('START TRANSACTION');
+
+        $oldWikiPage = getWikiPage($pid);
+        $cleanWikiPage = $purifier->purify($wikiPage);
+        $cleanWikiPage = htmlspecialchars($cleanWikiPage);
+        updateWikiPage($uid, $pid, $oldWikiPage, $cleanWikiPage);
+
+        mysql_query('COMMIT');
+}
+
 function emailTesters($pid, $status)
 {
         $transformer = puzzleTransformer($pid);
@@ -2221,6 +2248,12 @@ function getPuzzlesInTesting()
         $sql = "SELECT puzzle_idea.id FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE pstatus.inTesting = '1'";
         return get_elements_null($sql);
+}
+
+function getWikiPage($pid) {
+        $sql = sprintf("SELECT wikipage FROM puzzle_idea WHERE id='%s'",
+                       mysql_real_escape_string($pid));
+        return get_element_null($sql);
 }
 
 function getMostRecentDraftForPuzzle($pid) {

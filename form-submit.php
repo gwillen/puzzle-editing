@@ -176,6 +176,18 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeWikiPage'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                $wikiPage = $_POST['wikiPage'];
+
+                changeWikiPage($uid, $pid, $wikiPage);
+
+                header("Location: " . URL . "/puzzle?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['uploadFile'])) {
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];

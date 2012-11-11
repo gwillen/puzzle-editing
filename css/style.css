@@ -304,6 +304,10 @@ td.testsolveInfo {
 	padding: 0em 1em 0em 0em;
 }
 
+td.wikiInfo {
+	padding: 0em 1em 0em 0em;
+}
+
 div.fileInfo {
 	padding-top: .75em;
 }

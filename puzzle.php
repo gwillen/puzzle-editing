@@ -89,6 +89,11 @@
         displayNotes($uid, $pid);
         echo "</div>";
 
+        // List wiki page
+        echo "<div class='wikiInfo'>";
+        displayWikiPage($uid, $pid);
+        echo "</div>";
+
         // List testsolve requests
         echo "<div class='testsolveInfo'>";
         displayTestsolveRequests($uid, $pid);
@@ -656,6 +661,34 @@ function displayNotes($uid, $pid)
                                         <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
                                         <input type="text" name="notes" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
                                         <input type="submit" name="changeNotes" value="Change" />
+                                </form>
+                        </td>
+                </tr>
+        </table>
+<?php
+}
+
+function displayWikiPage($uid, $pid)
+{
+        $page = getWikiPage($pid);
+
+?>
+        <table class="wikiInfo">
+                <tr>
+                        <td class='wikiInfo'>
+                                <strong>Testsolve Wiki Page: </strong> <a href="<?php echo $page; ?>"><?php echo $page; ?></a>
+                        </td>
+                        <td class='wikiInfo'>
+                                <a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td colspan='2'>
+                                <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <input type="text" name="wikiPage" maxlength="255" style="width:40em;" value="<?php echo $page; ?>"/>
+                                        <input type="submit" name="changeWikiPage" value="Change" />
                                 </form>
                         </td>
                 </tr>

@@ -47,6 +47,7 @@
                 unset($_SESSION['feedback']);
         }
 
+        displayWikiPage($pid);
         displayDraft($pid);
         echo '<br />';
 
@@ -74,6 +75,28 @@
         foot();
 
 //------------------------------------------------------------------------
+
+function displayWikiPage($pid)
+{
+        $page = getWikiPage($pid);
+        if ($page == NULL) {
+                echo '<h3>No Testsolve Wiki Page</h3>';
+                return;
+        }
+
+?>
+        <table style="border-width: 0px; vertical-align:middle;">
+                <tr>
+                        <td style="vertical-align:middle;background-color: #A9D7FF;">
+                                Testsolve wiki page: <a href="<?php echo $page; ?>">
+                                        <?php echo $page; ?>
+                                </a>
+                        </td>
+                </tr>
+        </table>
+<?php
+}
+
 function displayDraft($pid)
 {
         $draft = getMostRecentDraftForPuzzle($pid);
@@ -93,7 +116,7 @@ function displayDraft($pid)
         <table style="border-width: 0px; vertical-align:middle;">
                 <tr>
                         <td style="vertical-align:middle;background-color: #FAD97D;">
-                                <a href="<?php echo $draft['filename']; ?>">
+                                Puzzle: <a href="<?php echo $draft['filename']; ?>">
                                         <?php echo $finfo['basename']; ?>
                                 </a>
                         </td>
