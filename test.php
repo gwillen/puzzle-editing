@@ -47,6 +47,7 @@
                 unset($_SESSION['feedback']);
         }
 
+        maybeDisplayWarning($uid, $pid);
         displayWikiPage($pid);
         displayDraft($pid);
         echo '<br />';
@@ -75,6 +76,28 @@
         foot();
 
 //------------------------------------------------------------------------
+
+function maybeDisplayWarning($uid, $pid)
+{
+        if (isTesterOnPuzzle($uid, $pid)) {
+                return;
+        }
+?>
+        <table style="border-width: 0px; vertical-align:middle;">
+                <tr>
+                        <td style="vertical-align:middle;background-color: #FFA7A9;">
+                                <B>WARNING:</B> You are not marked as a current
+                                testsolver.<br> Please
+                                use the puzzle version, and wiki page, that
+                                were current when you started solving, NOT the
+                                ones listed below (if they differ).<br>If in doubt, contact Glenn
+                                Willen or Robin Baur.
+                        </td>
+                </tr>
+        </table>
+<?php
+}
+
 
 function displayWikiPage($pid)
 {
