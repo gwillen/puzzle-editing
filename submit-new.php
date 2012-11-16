@@ -16,7 +16,11 @@
                 $title = $_POST['title'];
                 $summary = $_POST['summary'];
                 $description = $_POST['description'];
-                $coauthors = $_POST['coauthor'];
+                if (isset($_POST['coauthor'])) {
+                        $coauthors = $_POST['coauthor'];
+                } else {
+                        $coauthors = array();
+                }
 
                 $purifier = new HTMLPurifier();
                 $cleanTitle = $purifier->purify($title);
