@@ -836,6 +836,9 @@ function getAvailableFactcheckersForPuzzle($pid)
         // Get all users
         $sql = 'SELECT uid FROM user_info';
         $users = get_elements($sql);
+        if ($users == NULL) {
+                $users = array();
+        }
 
         $fcs = NULL;
         foreach ($users as $uid) {
@@ -880,7 +883,12 @@ function isFactcheckerAvailable($uid, $pid)
 
 function getCurrentTestersAsEmailList($pid)
 {
-        $testers = array_keys(getCurrentTestersForPuzzle($pid));
+        $testers = getCurrentTestersForPuzzle($pid);
+        if ($testers == NULL) {
+                $testers = array();
+        } else {
+                $testers = array_keys($testers);
+        }
 
         return getUserNamesAndEmailsAsList($testers);
 }
