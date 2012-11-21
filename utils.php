@@ -2464,7 +2464,7 @@ function createFeedbackComment($done, $time, $tried, $liked, $when_return)
 
 function getRounds()
 {
-        $sql = sprintf("SELECT * FROM rounds");
+        $sql = sprintf("SELECT * FROM rounds ORDER BY unlock_at");
         return get_rows_null($sql);
 }
 
