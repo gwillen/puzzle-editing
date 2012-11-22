@@ -1,15 +1,16 @@
 <?php
         // require_once "/var/www/htmlpurifier-4.0.0/library/HTMLPurifier.auto.php";
-        require_once "/usr/share/php-htmlpurifier/library/HTMLPurifier.auto.php";
+        require_once "HTMLPurifier.auto.php";
 
         ini_set('default_charset', 'UTF-8');
         ini_set('session.gc_maxlifetime','86400');
 
         session_start();
-        define("DEVMODE", FALSE);
+        define("DEVMODE", TRUE);
         define("ANON_TESTERS", FALSE);
-        define("URL", "http://z.manicsages.org/puzzle");
-
+        //define("URL", "http://z.manicsages.org/puzzle");
+        define("URL", "http://localhost/~gwillen/puzzle-editing");
+        
         // $dev = preg_match("/\/(.*)\/writing.*/", $_SERVER["SCRIPT_NAME"], $matches);
         // if ($dev) {
         //   define("DEVMODE", TRUE);
