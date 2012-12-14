@@ -18,6 +18,7 @@
         $hrs=floor($tth/(60 * 60))-(24*$days);
         $mins=floor($tth/(60))-(24*60*$days)-(60*$hrs);
 
+        echo "To chat, please go to <a href='http://manicsages.org/writingwiki/index.php/Main_Page'>the writing wiki</a>. (The chat box here was found to be annoying and has been removed.)<br>\n";
         echo "<h2>Latest Updates:</h2>\n";
 
         // Display index page
