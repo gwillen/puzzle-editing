@@ -1643,16 +1643,29 @@ function changeStatus($uid, $pid, $status)
         }
 
         // Self-service testsolving is 25.
-        print "Status is '$status' and gwp is '" . getWikiPage($pid) . "'\n<br>";
         if ($status == 25 && (getWikiPage($pid) == "" || getWikiPage($pid) == NULL)) {
                 $newpage = defaultWikiPageForPuzzle($pid);
                 updateWikiPage($uid, $pid, "", $newpage);
         }
+
+        $fcs = getFactcheckersForPuzzle($pid);
+        if (isStatusInFactchecking($status) && !empty($fcs)) {
+                // Let existing factcheckers know that we've gone back into
+                // factchecking.
+                emailFactcheckers($pid);
+        }
+
 }
 
 function isStatusInTesting($sid)
 {
         $sql = sprintf("SELECT inTesting FROM pstatus WHERE id='%s'", mysql_real_escape_string($sid));
+        return get_element($sql);
+}
+
+function isStatusInFactchecking($sid)
+{
+        $sql = sprintf("SELECT needsFactcheck FROM pstatus WHERE id='%s'", mysql_real_escape_string($sid));
         return get_element($sql);
 }
 
@@ -1704,6 +1717,21 @@ function emailTesters($pid, $status)
 
         $testers = getCurrentTestersForPuzzle($pid);
         foreach ($testers as $uid => $name) {
+                sendEmail($uid, $subject, $message, $link);
+        }
+}
+
+function emailFactcheckers($pid)
+{
+        $transformer = puzzleTransformer($pid);
+        $subject = "Puzzle $pid needs factchecking attention";
+
+        $message = "$transformer (puzzle $pid), on which you are a factchecker, was put back into factchecking. Please comment on it letting us know whether, and when, you can take another look at it. Thanks!";
+
+        $link = URL . "/puzzle?pid=$pid";
+
+        $fcs = getFactcheckersForPuzzle($pid);
+        foreach ($fcs as $uid => $name) {
                 sendEmail($uid, $subject, $message, $link);
         }
 }
