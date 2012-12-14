@@ -881,6 +881,12 @@ function isFactcheckerAvailable($uid, $pid)
   return (!isAuthorOnPuzzle($uid, $pid) && !isFactcheckerOnPuzzle($uid, $pid));
 }
 
+function defaultWikiPageForPuzzle($pid)
+{
+        $transformer = puzzleTransformer($pid);
+        return "http://manicsages.org/writingwiki/index.php?title=$transformer/Testsolve_1";
+}
+
 function getCurrentTestersAsEmailList($pid)
 {
         $testers = getCurrentTestersForPuzzle($pid);
@@ -1634,6 +1640,13 @@ function changeStatus($uid, $pid, $status)
                 if (getTestsolveRequestsForPuzzle($pid) == 0) {
                         requestTestsolve($uid, $pid, "Automatic testsolve request.");
                 }
+        }
+
+        // Self-service testsolving is 25.
+        print "Status is '$status' and gwp is '" . getWikiPage($pid) . "'\n<br>";
+        if ($status == 25 && (getWikiPage($pid) == "" || getWikiPage($pid) == NULL)) {
+                $newpage = defaultWikiPageForPuzzle($pid);
+                updateWikiPage($uid, $pid, "", $newpage);
         }
 }
 
