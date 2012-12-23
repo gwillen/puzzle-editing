@@ -16,7 +16,7 @@
                 } else {
                         // Otherwise, try again.
                         echo '<h3> I\'m sorry. That email address is not authorized to register. </h3>';
-                        echo '<h3> Please try again, or contact contact the <a href="mailto:server-admin@puzzle2011.com">Server Administrators</a>.';
+                        echo '<h3> Please try again, or contact contact the <a href="mailto:tech@manicsages.org">Server Administrators</a>.';
                         checkEmailForm();
                 }
         } else if(isset($_POST['register'])) {
@@ -156,6 +156,7 @@
 //------------------------------------------------------------------------
         function checkEmail($email, $username)
         {
+                return false;
                 $sql = sprintf("SELECT * FROM user_info WHERE email='%s'",
                                mysql_real_escape_string($email));
                 $result = query_db($sql);
