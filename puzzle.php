@@ -832,10 +832,9 @@ function displayPostProd($uid, $pid)
   */
   $fileList = getFileListForPuzzle($pid, 'postprod');
   $file = $fileList[0];
-  print "file list is " . $fileList;
   $url .= "?title=" . urlencode($title);
   $url .= "&roudname=" . urlencode($roundname);
-  $url .= "&htmlurl=" . urlencode($file['filename']);
+  $url .= "&htmlurl=" . urlencode(URL . "/" . $file['filename']);
   echo "<strong>Post-Production Link: </strong>";
   echo "<a href='$url'>$url</a>";
 }
