@@ -814,9 +814,11 @@ function displayFileList ($uid, $pid, $type) {
 function displayPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
-  $url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
+  //$url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
+  $url = "http://z.manicsages.org/postprod-preview/";
   $roundname = $rinfo['name'];
   $title = getTitle($pid);
+  /*
   $showmeta = FALSE;
   if ($roundname == 'Metas') {
     $m = array();
@@ -827,10 +829,13 @@ function displayPostProd($uid, $pid)
       if ($m[1]=='S') { $showmeta = TRUE; }
     }
   }
-  $url .= postprodCanon($roundname) . '/';
-  if (!$showmeta) {
-    $url .= postprodCanon($title) . '/';
-  }
+  */
+  $fileList = getFileListForPuzzle($pid, 'postprod');
+  $file = $fileList[0];
+  print "file list is " . $fileList;
+  $url .= "?title=" . urlencode($title);
+  $url .= "&roudname=" . urlencode($roundname);
+  $url .= "&htmlurl=" . urlencode($file['filename']);
   echo "<strong>Post-Production Link: </strong>";
   echo "<a href='$url'>$url</a>";
 }
