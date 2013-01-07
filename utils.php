@@ -96,7 +96,7 @@ function postprodCanonRound($s)
 function pushToPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
-  $runscript = "/usr/bin/env | grep ^PUZZ";
+  $runscript = "/usr/bin/env | grep ^CATTLEPROD";
   $roundname = $rinfo['name'];
   $roundslug = postprodCanonRound($roundname);
   $title = getTitle($pid);
@@ -108,10 +108,12 @@ function pushToPostProd($uid, $pid)
     #utilsError("Nothing in the postproduction slot of this puzzle: Nothing to push!");
     echo "WARNING: This puzzle has no postprod slot. There is nothing to actually push. If push were implemented, this would be an error. <br><br>";
   }
-  $fileprefix = "/srv/puzzle-editing/upload/puzzle_files/";
-  putenv("PUZZ_TITLE_SLUG=" . $titleslug); 
-  putenv("PUZZ_ROUND_SLUG=" . $roundslug);
-  putenv("PUZZ_FILE=" . $fileprefix . $filename);
+  $fileprefix = "/srv/puzzle-editing/";
+  putenv("CATTLEPROD_PUZZLE_SLUG=" . $titleslug); 
+  putenv("CATTLEPROD_ROUND_SLUG=" . $roundslug);
+  putenv("CATTLEPROD_TITLE=" . $title);
+  putenv("CATTLEPROD_MEDIA=" . $fileprefix . $filename);
+  putenv("CATTLEPROD_ASSET_PATH=/tmp/assets");
   $output = shell_exec($runscript);
   echo "Push-to-postprod isn't implemented yet. But if it were, here is what would get passed to it:<br>";
   echo "<pre>";
