@@ -80,6 +80,45 @@ function postprodCanon($s)
   return trim($s, "_");
 }
 
+function postprodCanonRound($s)
+{
+  $roundslugmap = array(
+    'Agent 99' => 'get_smart',
+    'Sneakers' => 'sneakers',
+    'Rubik' => 'rubik',
+    'Feynman' => 'feynman',
+    "Ocean's 11" => 'oceans_11',
+    'Indiana Jones' => 'indiana');
+  $s = $roundslugmap[$s];
+  return $s;
+}
+
+function pushToPostProd($uid, $pid)
+{
+  $rinfo = getRoundForPuzzle($pid);
+  $runscript = "/usr/bin/env | grep ^PUZZ";
+  $roundname = $rinfo['name'];
+  $roundslug = postprodCanonRound($roundname);
+  $title = getTitle($pid);
+  $titleslug = postprodCanon($title);
+  $fileList = getFileListForPuzzle($pid, 'postprod');
+  $file = $fileList[0];
+  if (empty($file)) {
+    #utilsError("Nothing in the postproduction slot of this puzzle: Nothing to push!");
+    echo "WARNING: This puzzle has no postprod slot. There is nothing to actually push. If push were implemented, this would be an error. <br><br>";
+  }
+  $fileprefix = "/srv/puzzle-editing/upload/puzzle_files/";
+  putenv("PUZZ_TITLE_SLUG=" . $titleslug); 
+  putenv("PUZZ_ROUND_SLUG=" . $roundslug);
+  putenv("PUZZ_FILE=" . $fileprefix . $file);
+  $output = shell_exec($runscript);
+  echo "Push-to-postprod isn't implemented yet. But if it were, here is what would get passed to it:<br>";
+  echo "<pre>";
+  echo $output;
+  echo "</pre>";
+  exit(1);
+}
+
 function isStatusInPostProd($sid)
 {
         $sql = sprintf("SELECT postprod FROM pstatus WHERE id='%s'", mysql_real_escape_string($sid));

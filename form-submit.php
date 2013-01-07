@@ -378,6 +378,17 @@
                 exit(0);
         }
 
+        if (isset($_POST['postprod'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                pushToPostProd($uid, $pid);
+
+                header("Location: " . URL . "/puzzle?pid=$pid");
+                exit(0);
+        }
+
+
 //-------------------------------------
 
 
