@@ -835,8 +835,16 @@ function displayPostProd($uid, $pid)
   $url .= "?title=" . urlencode($title);
   $url .= "&roundname=" . urlencode($roundname);
   $url .= "&htmlurl=" . urlencode(URL . "/" . $file['filename']);
-  echo "<strong>Post-Production Link: </strong>";
-  echo "<a href='$url'>$url</a>";
+?>
+  <strong>Post-Production Preview Link: </strong>
+  <a href="<?php echo $url ?>">View postprod</a>
+  <br>
+  <form action="form-submit.php" method="post">
+    <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+    <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+    <input type="submit" name="postprod" value="Push this puzzle to post-production">
+  </form>
+<?php
 }
 
 function displayComments($uid, $pid, $lastVisit)
