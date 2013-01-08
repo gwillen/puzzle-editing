@@ -88,7 +88,8 @@ function postprodCanonRound($s)
     'Rubik' => 'rubik',
     'Feynman' => 'feynman',
     "Ocean's 11" => 'oceans_11',
-    'Indiana Jones' => 'indiana');
+    'Indiana Jones' => 'indiana',
+    'Opening' => 'enigmavalley');
   $s = $roundslugmap[$s];
   return $s;
 }
@@ -96,7 +97,8 @@ function postprodCanonRound($s)
 function pushToPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
-  $runscript = "/usr/bin/env | grep ^CATTLEPROD";
+  #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
+  $runscript = "/srv/veil/venv/bin/cattleprod";
   $roundname = $rinfo['name'];
   $roundslug = postprodCanonRound($roundname);
   $title = getTitle($pid);
@@ -105,21 +107,15 @@ function pushToPostProd($uid, $pid)
   $file = $fileList[0];
   $filename = $file['filename'];
   if (empty($filename)) {
-    #utilsError("Nothing in the postproduction slot of this puzzle: Nothing to push!");
-    echo "WARNING: This puzzle has no postprod slot. There is nothing to actually push. If push were implemented, this would be an error. <br><br>";
+    utilsError("Nothing in the postproduction slot of this puzzle: Nothing to push!");
   }
   $fileprefix = "/srv/puzzle-editing/";
-  putenv("CATTLEPROD_PUZZLE_SLUG=" . $titleslug); 
+  putenv("CATTLEPROD_PUZZLE_SLUG=beta_" . $titleslug); 
   putenv("CATTLEPROD_ROUND_SLUG=" . $roundslug);
   putenv("CATTLEPROD_TITLE=" . $title);
   putenv("CATTLEPROD_MEDIA=" . $fileprefix . $filename);
-  putenv("CATTLEPROD_ASSET_PATH=/tmp/assets");
+  putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
   $output = shell_exec($runscript);
-  echo "Push-to-postprod isn't implemented yet. But if it were, here is what would get passed to it:<br>";
-  echo "<pre>";
-  echo $output;
-  echo "</pre>";
-  exit(1);
 }
 
 function isStatusInPostProd($sid)
@@ -1851,6 +1847,10 @@ function uploadFiles($uid, $pid, $type, $file) {
                 } else {
                         $_SESSION['upload_error'] = "There was an error uploading the file, please try again. (Note: file size is limited to 25MB) " . serialize($file);
                 }
+        }
+
+        if ($type == "postprod") {
+                pushToPostProd($uid, $pid);      
         }
 }
 

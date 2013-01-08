@@ -815,7 +815,7 @@ function displayPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
   //$url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
-  $url = "http://z.manicsages.org/postprod-preview/postprod.coinheist.com";
+  $urlprefix = "http://z.manicsages.org/postprod-preview/postprod.coinheist.com";
   $roundname = $rinfo['name'];
   $title = getTitle($pid);
   /*
@@ -832,11 +832,20 @@ function displayPostProd($uid, $pid)
   */
   $fileList = getFileListForPuzzle($pid, 'postprod');
   $file = $fileList[0];
+  $url = $urlprefix;
   $url .= "/" . postprodCanonRound($roundname);
-  $url .= "/" . postprodCanon($title);
+  $url .= "/beta_" . postprodCanon($title) . "/";
 ?>
-  <strong>Post-Production Link: </strong>
-  <a href="<?php echo $url ?>">View postprod</a>
+  <strong>Post-Production Beta Link: </strong>
+  <a href="<?php echo $url ?>">View postprod (as pushed from puzzletron)</a>
+  <br>
+<?php
+  $url = $urlprefix;
+  $url .= "/" . postprodCanonRound($roundname);
+  $url .= "/" . postprodCanon($title) . "/";
+?>
+  <strong>Post-Production Final Link: </strong>
+  <a href="<?php echo $url ?>">View postprod (version installed as final)</a>
   <br>
   <form action="form-submit.php" method="post">
     <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
