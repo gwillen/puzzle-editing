@@ -2013,6 +2013,12 @@ function getNumTesters($pid)
 
 }
 
+function getPuzzlesInPostprod()
+{
+        $puzzles = get_elements_null("select id from puzzle_idea where pstatus=6");
+        return sortByLastCommentDate($puzzles);
+}
+
 function getPuzzlesInEditorQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM editor_queue WHERE uid='%s'",

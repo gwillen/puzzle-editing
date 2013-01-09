@@ -58,6 +58,7 @@
                         <?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "factcheck") ? "selnav" : "nav" ?>" href="factcheck">Fact Check</a></li> <?php } ?>
             <?php if(isset($_SESSION['uid']) && isFactChecker($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "ffc") ? "selnav" : "nav" ?>" href="ffc">Final Fact Check</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "testsolving") ? "selnav" : "nav" ?>" href="testsolving">Testsolving</a></li> <?php } ?>
+                        <?php if(isset($_SESSION['uid'])) {?> <li class="nav"><a class="<?php echo ($selnav == "postprod") ? "selnav" : "nav" ?>" href="postprod">Post-Production</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid']) && (isLurker($_SESSION['uid']) || isTestingAdmin($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "testadmin") ? "selnav" : "nav" ?>" href="testadmin">Testing Admin</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid']) && !isBlind($_SESSION['uid'])) {?> <li class='nav'><a class="<?php echo ($selnav == "puzzlestats") ? "selnav" : "nav" ?>" href='puzzlestats'>Stats</a></li> <?php } ?>
                         <?php if(isset($_SESSION['uid']) && (isEditor($_SESSION['uid']) || isLurker($_SESSION['uid']))) {?> <li class="nav"><a class="<?php echo ($selnav == "answers") ? "selnav" : "nav" ?>" href="answers">Answers</a></li> <?php } ?>
