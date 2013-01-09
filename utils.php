@@ -83,7 +83,7 @@ function postprodCanon($s)
 function postprodCanonRound($s)
 {
   $roundslugmap = array(
-    'Agent 99' => 'get_smart',
+    'Get Smart' => 'get_smart',
     'Sneakers' => 'sneakers',
     'Rubik' => 'rubik',
     'Feynman' => 'feynman',
