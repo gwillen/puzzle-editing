@@ -2022,6 +2022,12 @@ function getPuzzlesInPostprod()
         return sortByLastCommentDate($puzzles);
 }
 
+function getPuzzlesInPostprodAndLater()
+{
+        $puzzles = get_elements_null("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.postprod='1'");
+        return sortByLastCommentDate($puzzles);
+}
+
 function getPuzzlesInEditorQueue($uid)
 {
         $sql = sprintf("SELECT pid FROM editor_queue WHERE uid='%s'",
