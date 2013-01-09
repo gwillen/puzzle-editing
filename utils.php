@@ -1510,7 +1510,10 @@ function canFactCheckPuzzle($uid, $pid)
 
 function canViewPuzzle($uid, $pid)
 {
-        return isLurker($uid) || isPuzzleInFinalFactChecking($pid) || isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) || isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid) || isSpoiledOnPuzzle($uid, $pid);
+        return isLurker($uid) || isPuzzleInFinalFactChecking($pid) ||
+          isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) ||
+          isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid) ||
+          isSpoiledOnPuzzle($uid, $pid) || isPuzzleInPostprod;
 }
 
 function canChangeAnswers($uid)
@@ -2391,6 +2394,13 @@ function isPuzzleInFinalFactChecking($pid)
 {
         $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
                         WHERE puzzle_idea.id='%s' AND pstatus.finalFactcheck='1'", mysql_real_escape_string($pid));
+        return has_result($sql);
+}
+
+function isPuzzleInPostprod($pid)
+{
+        $sql = sprintf("SELECT * FROM puzzle_idea LEFT JOIN pstatus ON puzzle_idea.pstatus = pstatus.id
+                        WHERE puzzle_idea.id='%s' AND pstatus.postprod='1'", mysql_real_escape_string($pid));
         return has_result($sql);
 }
 
