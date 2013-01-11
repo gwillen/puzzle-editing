@@ -816,7 +816,7 @@ function displayPostProd($uid, $pid)
   $rinfo = getRoundForPuzzle($pid);
   //$url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
   $urlprefix = "http://z.manicsages.org/postprod-preview/postprod.coinheist.com";
-  $specialurlprefix = "http://z.manicsages.org/postprod-preview/postprod.engimavalley.com";
+  $specialurlprefix = "http://z.manicsages.org/postprod-preview/postprod.enigmavalley.com";
   $roundname = $rinfo['name'];
   $title = getTitle($pid);
   /*
