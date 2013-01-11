@@ -816,6 +816,7 @@ function displayPostProd($uid, $pid)
   $rinfo = getRoundForPuzzle($pid);
   //$url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
   $urlprefix = "http://z.manicsages.org/postprod-preview/postprod.coinheist.com";
+  $specialurlprefix = "http://z.manicsages.org/postprod-preview/postprod.engimavalley.com";
   $roundname = $rinfo['name'];
   $title = getTitle($pid);
   /*
@@ -833,7 +834,11 @@ function displayPostProd($uid, $pid)
   $fileList = getFileListForPuzzle($pid, 'postprod');
   $file = $fileList[0];
   $url = $urlprefix;
-  $url .= "/" . postprodCanonRound($roundname);
+  if (postprodCanonRound($roundname) == "engimavalley") {
+    $url = $specialurlprefix;
+  } else {
+    $url .= "/" . postprodCanonRound($roundname);
+  }
   $url .= "/beta_" . postprodCanon($title) . "/";
 ?>
   <strong>Post-Production Beta Link: </strong>
