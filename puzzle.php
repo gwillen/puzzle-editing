@@ -834,7 +834,7 @@ function displayPostProd($uid, $pid)
   $fileList = getFileListForPuzzle($pid, 'postprod');
   $file = $fileList[0];
   $url = $urlprefix;
-  if (postprodCanonRound($roundname) == "engimavalley") {
+  if (postprodCanonRound($roundname) == "enigmavalley") {
     $url = $specialurlprefix;
   } else {
     $url .= "/" . postprodCanonRound($roundname);
