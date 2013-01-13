@@ -19,7 +19,7 @@
                 if ($rinfo) {
                   $roundname = $rinfo['name'];
                   $roundslug = postprodCanonRound($roundname);
-                  $exportdata[] = array('pid' => $pid, 'status' => $status, 'title' => $title, 'titleslug' => $titleslug, 'round' => $roundname, 'roundslug' => $roundslug);
+                  $exportdata[] = array('url' => "/$roundslug/$puzzleslug/", 'pid' => $pid, 'status' => $status, 'title' => $title, 'titleslug' => $titleslug, 'round' => $roundname, 'roundslug' => $roundslug);
                 }
         }
         print json_encode($exportdata) . "\n";
