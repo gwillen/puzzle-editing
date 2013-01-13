@@ -99,7 +99,7 @@ function pushToPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
   #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
-  $runscript = "/nfs/sages/deploy/mh2013/present/bin/cattleprod";
+  $runscript = "/srv/veil/venv/bin/cattleprod";
   $roundname = $rinfo['name'];
   $roundslug = postprodCanonRound($roundname);
   $title = getTitle($pid);
