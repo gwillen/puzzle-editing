@@ -89,6 +89,7 @@ function postprodCanonRound($s)
     'Feynman' => 'feynman',
     "Ocean's 11" => 'oceans_11',
     'Indiana Jones' => 'indiana',
+    'Movable answers' => 'movable',
     'Opening' => 'enigmavalley');
   $s = $roundslugmap[$s];
   return $s;
@@ -98,7 +99,7 @@ function pushToPostProd($uid, $pid)
 {
   $rinfo = getRoundForPuzzle($pid);
   #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
-  $runscript = "/srv/veil/venv/bin/cattleprod";
+  $runscript = "/nfs/sages/deploy/mh2013/present/bin/cattleprod";
   $roundname = $rinfo['name'];
   $roundslug = postprodCanonRound($roundname);
   $title = getTitle($pid);
@@ -116,6 +117,10 @@ function pushToPostProd($uid, $pid)
   putenv("CATTLEPROD_MEDIA=" . $fileprefix . $filename);
   putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
   $output = shell_exec($runscript);
+  if ($output) {
+    print "Push failed: $output";
+    exit(1);
+  }
 }
 
 function isStatusInPostProd($sid)
