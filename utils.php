@@ -2086,7 +2086,7 @@ function getNumTesters($pid)
 
 function getPuzzlesInPostprod()
 {
-        $puzzles = get_elements_null("select id from puzzle_idea where pstatus=6");
+        $puzzles = get_elements_null("select puzzle_idea.id from puzzle_idea, pstatus where puzzle_idea.pstatus=pstatus.id and pstatus.name like '%Post-Production%'");
         return sortByLastCommentDate($puzzles);
 }
 
