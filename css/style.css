@@ -292,6 +292,13 @@ div.peopleInfo {
 	padding-top: 1em;
 }
 
+div.creditsInfo {
+	padding-top: 1em;
+}
+
+td.creditsInfo {
+	padding: 0em 1em 0em 0em;
+}
 div.statusInfo {
 	padding-top: 1em;
 }
