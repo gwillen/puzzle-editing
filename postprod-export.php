@@ -16,10 +16,11 @@
                 $title = getTitle($pid);
                 $titleslug = postprodCanon($title);
                 $rinfo = getRoundForPuzzle($pid);
+                $answer = getAnswersForPuzzleAsList($pid);
                 if ($rinfo) {
                   $roundname = $rinfo['name'];
                   $roundslug = postprodCanonRound($roundname);
-                  $exportdata[] = array('url' => "/$roundslug/$titleslug/", 'pid' => $pid, 'status' => $status, 'title' => $title, 'titleslug' => $titleslug, 'round' => $roundname, 'roundslug' => $roundslug);
+                  $exportdata[] = array('url' => "/$roundslug/$titleslug/", 'pid' => $pid, 'status' => $status, 'title' => $title, 'titleslug' => $titleslug, 'round' => $roundname, 'roundslug' => $roundslug, 'answer' => $answer);
                 }
         }
         print json_encode($exportdata) . "\n";
