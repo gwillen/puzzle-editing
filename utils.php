@@ -101,7 +101,7 @@ function postprodAll($uid)
     @ini_set('implicit_flush',1);
     @ob_end_clean();
     set_time_limit(0);
-    header( 'Content-type: text/html; charset=utf-8' );
+    header( 'Content-type: text/plain; charset=utf-8' );
     print "Postprodding all...<br>";
     ob_flush(); flush();
     $allofem = getPuzzlesInPostprodAndLater();
@@ -130,7 +130,7 @@ function pushToPostProd($uid, $pid)
 function pushToPostProdHelper($uid, $pid) {
   $rinfo = getRoundForPuzzle($pid);
   #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
-  $runscript = "/srv/veil/venv/bin/cattleprod";
+  $runscript = "/srv/veil/venv/bin/cattleprod 2>&1";
   $roundname = $rinfo['name'];
   $roundslug = postprodCanonRound($roundname);
   $title = getTitle($pid);
