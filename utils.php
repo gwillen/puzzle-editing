@@ -95,8 +95,39 @@ function postprodCanonRound($s)
   return $s;
 }
 
+function postprodAll($uid)
+{
+    @ini_set('zlib.output_compression',0);
+    @ini_set('implicit_flush',1);
+    @ob_end_clean();
+    set_time_limit(0);
+    header( 'Content-type: text/html; charset=utf-8' );
+    print "Postprodding all...<br>";
+    ob_flush(); flush();
+    $allofem = getPuzzlesInPostprodAndLater();
+    foreach ($allofem as $puz) {
+        print "$puz ...";
+        ob_flush(); flush();
+        $out = pushToPostProdHelper($uid, $puz);
+        if (!$out) {
+            print "OK<br>";
+        } else {
+            print "$out<br>";
+        }
+        ob_flush(); flush();
+    }
+    exit(1);
+}
+
 function pushToPostProd($uid, $pid)
 {
+  $out = pushToPostProdHelper($uid, $pid);
+  if ($out) {
+    utilsError($out);
+  }
+}
+
+function pushToPostProdHelper($uid, $pid) {
   $rinfo = getRoundForPuzzle($pid);
   #$runscript = "/usr/bin/env | grep ^CATTLEPROD";
   $runscript = "/srv/veil/venv/bin/cattleprod";
@@ -108,7 +139,7 @@ function pushToPostProd($uid, $pid)
   $file = $fileList[0];
   $filename = $file['filename'];
   if (empty($filename)) {
-    utilsError("Nothing in the postproduction slot of this puzzle: Nothing to push!");
+    return "Nothing in the postproduction slot of this puzzle: Nothing to push!";
   }
   $fileprefix = "/srv/puzzle-editing/";
   putenv("CATTLEPROD_PUZZLE_SLUG=beta_" . $titleslug); 
@@ -118,8 +149,7 @@ function pushToPostProd($uid, $pid)
   putenv("CATTLEPROD_ASSET_PATH=/nfs/enigma/mh2013/chazelle/assets");
   $output = shell_exec($runscript);
   if ($output) {
-    print "Push failed: $output";
-    exit(1);
+    return "Push failed: $output";
   }
 }
 
@@ -1535,7 +1565,7 @@ function canViewPuzzle($uid, $pid)
         return isLurker($uid) || isPuzzleInFinalFactChecking($pid) ||
           isAuthorOnPuzzle($uid, $pid) || isEditorOnPuzzle($uid, $pid) ||
           isTestingAdminOnPuzzle($uid, $pid) || canFactCheckPuzzle($uid, $pid) ||
-          isSpoiledOnPuzzle($uid, $pid) || isPuzzleInPostprod;
+          isSpoiledOnPuzzle($uid, $pid) || isPuzzleInPostprod($pid);
 }
 
 function canChangeAnswers($uid)

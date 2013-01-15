@@ -400,6 +400,14 @@
                 exit(0);
         }
 
+        if (isset($_POST['postprodAll'])) {
+                $uid = $_POST['uid'];
+
+                postprodAll($uid);
+
+                header("Location: " . URL . "/postprod");
+                exit(0);
+        }
 
 //-------------------------------------
 
