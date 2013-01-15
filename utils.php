@@ -102,17 +102,17 @@ function postprodAll($uid)
     @ob_end_clean();
     set_time_limit(0);
     header( 'Content-type: text/plain; charset=utf-8' );
-    print "Postprodding all...<br>";
+    print "Postprodding all...\n\n";
     ob_flush(); flush();
     $allofem = getPuzzlesInPostprodAndLater();
     foreach ($allofem as $puz) {
-        print "$puz ...";
+        print "$puz ... ";
         ob_flush(); flush();
         $out = pushToPostProdHelper($uid, $puz);
         if (!$out) {
-            print "OK<br>";
+            print "OK\n";
         } else {
-            print "$out<br>";
+            print "FAILED\n\n$out\n\n";
         }
         ob_flush(); flush();
     }
