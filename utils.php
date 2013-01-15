@@ -466,6 +466,12 @@ function getTitle($pid)
         return get_element($sql);
 }
 
+function getCredits($pid)
+{
+        $sql = sprintf("SELECT credits FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
+        return get_element($sql);
+}
+
 function getNotes($pid)
 {
         $sql = sprintf("SELECT notes FROM puzzle_idea WHERE id='%s'", mysql_real_escape_string($pid));
@@ -547,6 +553,17 @@ function updateDescription($uid = 0, $pid, $oldDescription, $cleanDescription)
         $comment = "<p><strong>Changed description</strong></p>";
         $comment .= "<p><a class='description' href='#'>[View Old Description]</a></p>";
         $comment .= "<p>$oldDescription</p>";
+
+        addComment($uid, $pid, $comment, TRUE);
+}
+
+function updateCredits($uid = 0, $pid, $oldCredits, $cleanCredits)
+{
+        $sql = sprintf("UPDATE puzzle_idea SET credits='%s' WHERE id='%s'",
+                        mysql_real_escape_string($cleanCredits), mysql_real_escape_string($pid));
+        query_db($sql);
+
+        $comment = "Changed credits from \"$oldCredits\" to \"$cleanCredits\"";
 
         addComment($uid, $pid, $comment, TRUE);
 }
@@ -1713,6 +1730,22 @@ function isStatusInFactchecking($sid)
 {
         $sql = sprintf("SELECT needsFactcheck FROM pstatus WHERE id='%s'", mysql_real_escape_string($sid));
         return get_element($sql);
+}
+
+function changeCredits($uid, $pid, $credits)
+{
+        if (!canViewPuzzle($uid, $pid))
+                utilsError("You do not have permission to modify this puzzle.");
+
+        $purifier = new HTMLPurifier();
+        mysql_query('START TRANSACTION');
+
+        $oldCredits = getCredits($pid);
+        $cleanCredits = $purifier->purify($credits);
+        $cleanCredits = htmlspecialchars($cleanCredits);
+        updateCredits($uid, $pid, $oldCredits, $cleanCredits);
+
+        mysql_query('COMMIT');
 }
 
 function changeNotes($uid, $pid, $notes)

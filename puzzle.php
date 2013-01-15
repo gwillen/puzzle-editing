@@ -89,6 +89,11 @@
         displayNotes($uid, $pid);
         echo "</div>";
 
+        // List credits
+        echo "<div class='creditsInfo'>";
+        displayCredits($uid, $pid);
+        echo "</div>";
+
         // List wiki page
         echo "<div class='wikiInfo'>";
         displayWikiPage($uid, $pid);
@@ -640,6 +645,33 @@ function displayTestsolveRequests($uid, $pid)
 <?php
 }
 
+function displayCredits($uid, $pid)
+{
+        $notes = getCredits($pid);
+
+?>
+        <table class="creditsInfo">
+                <tr>
+                        <td class='creditsInfo'>
+                                <strong>Credits: </strong> <?php echo $notes; ?>
+                        </td>
+                        <td class='creditsInfo'>
+                                <a href="#" class="changeLink">[Change]</a>
+                        </td>
+                </tr>
+                <tr>
+                        <td colspan='2'>
+                                <form method="post" action="form-submit.php">
+                                        <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
+                                        <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
+                                        <input type="text" name="credits" maxlength="255" style="width:40em;" value="<?php echo $notes; ?>"/>
+                                        <input type="submit" name="changeCredits" value="Change" />
+                                </form>
+                        </td>
+                </tr>
+        </table>
+<?php
+}
 function displayNotes($uid, $pid)
 {
         $notes = getNotes($pid);

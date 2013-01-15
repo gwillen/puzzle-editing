@@ -164,6 +164,18 @@
                 exit(0);
         }
 
+        if (isset($_POST['changeCredits'])) {
+                $pid = $_POST['pid'];
+                $uid = $_POST['uid'];
+
+                $credits = $_POST['credits'];
+
+                changeCredits($uid, $pid, $credits);
+
+                header("Location: " . URL . "/puzzle?pid=$pid");
+                exit(0);
+        }
+
         if (isset($_POST['changeNotes'])) {
                 $pid = $_POST['pid'];
                 $uid = $_POST['uid'];
