@@ -2804,7 +2804,7 @@ function utilsError($msg)
 {
         mysql_query('ROLLBACK');
         echo "An error has occurred. Please try again. <br />";
-        echo $msg;
+        echo "<pre>$msg</pre>";
         foot();
         exit(1);
 }
