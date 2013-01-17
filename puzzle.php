@@ -110,13 +110,10 @@
         echo "</div>";
 
         // Link to post-prod site
-        if (isStatusInPostProd($puzzleInfo['pstatus'])) {
-              echo "<br />";
-              echo "<div class='postProd'>";
-              displayPostProd($uid, $pid);
-              echo "</div>";
-        }
-
+        echo "<br />";
+        echo "<div class='postProd'>";
+        displayPostProd($uid, $pid, isStatusInPostProd($puzzleInfo['pstatus']));
+        echo "</div>";
 
         // Display & add comments
         echo "<div class='comments'>";
@@ -843,7 +840,7 @@ function displayFileList ($uid, $pid, $type) {
         }
 }
 
-function displayPostProd($uid, $pid)
+function displayPostProd($uid, $pid, $pp)
 {
   $rinfo = getRoundForPuzzle($pid);
   //$url = "http://ihtfp.us/hunt-solutions/"; // XXX hard-coded, sigh.
@@ -872,24 +869,34 @@ function displayPostProd($uid, $pid)
     $url .= "/" . postprodCanonRound($roundname);
   }
   $url .= "/beta_" . postprodCanon($title) . "/";
+  if ($pp) {
 ?>
   <strong>Post-Production Beta Link: </strong>
   <a href="<?php echo $url ?>">View postprod (as pushed from puzzletron)</a>
   <br>
 <?php
+  }
   $url = $urlprefix;
-  $url .= "/" . postprodCanonRound($roundname);
+  if (postprodCanonRound($roundname) == "enigmavalley") {
+    $url = $specialurlprefix;
+  } else {
+    $url .= "/" . postprodCanonRound($roundname);
+  }
   $url .= "/" . postprodCanon($title) . "/";
 ?>
   <strong>Post-Production Final Link: </strong>
   <a href="<?php echo $url ?>">View postprod (version installed as final)</a>
   <br>
+<?php
+  if ($pp) {
+?>
   <form action="form-submit.php" method="post">
     <input type="hidden" name="pid" value="<?php echo $pid; ?>" />
     <input type="hidden" name="uid" value="<?php echo $uid; ?>" />
     <input type="submit" name="postprod" value="Push this puzzle to post-production">
   </form>
 <?php
+  }
 }
 
 function displayComments($uid, $pid, $lastVisit)
